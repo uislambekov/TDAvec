@@ -4,8 +4,10 @@ Title: Vector summaries of persistence diagrams
 Version: 0.1.3
 Author: Umar Islambekov
 Maintainer: Umar Islambekov <uislambekov@gmail.com>
-Description: Provides tools for computing various vector summaries of persistence diagrams studied in Topological Data Analysis
+Description: Provides tools for computing various vector summaries of persistence diagrams studied in Topological Data Analysis. For improved computational efficiency, 
+    all code for the vector summaries is written in 'C++' using the 'Rcpp' package.
 License: MIT License
+Encoding: UTF-8
 Imports:
   Rcpp (>= 1.0.5)
 LinkingTo: Rcpp
