@@ -11,5 +11,6 @@ Encoding: UTF-8
 Imports:
   Rcpp (>= 1.0.5)
 LinkingTo: Rcpp
+VignetteBuilder: knitr
 URL: https://github.com/uislambekov/TDAvec
 BugReports: https://github.com/uislambekov/TDAvec/issues
