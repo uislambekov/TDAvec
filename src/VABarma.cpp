@@ -2,10 +2,11 @@
 #include <iostream>
 using namespace arma;
 using namespace Rcpp;
+
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-NumericVector computeVABarma(const mat& D, const int& homDim, const vec& scaleSeq, std::string evaluate = "intervals") {
+NumericVector computeVABarma(const arma::mat& D, const int& homDim, const arma::vec& scaleSeq, std::string evaluate = "intervals") {
 
   uvec indices = find(D.col(0) == homDim); // Get indices of rows where D.col(0) == homDim
 
