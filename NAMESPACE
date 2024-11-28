@@ -1,2 +1,3 @@
 exportPattern("^[[:alpha:]]+")
-useDynLib(TDAvec)
+useDynLib(TDAvec, .registration = TRUE)
+importFrom(Rcpp, sourceCpp)

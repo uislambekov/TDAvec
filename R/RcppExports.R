@@ -2,34 +2,38 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 computeECC <- function(D, maxhomDim, scaleSeq) {
-    .Call('_TDAvec_computeECC', PACKAGE = 'TDAvec', D, maxhomDim, scaleSeq)
+    .Call(`_TDAvec_computeECC`, D, maxhomDim, scaleSeq)
 }
 
 computeNL <- function(D, homDim, scaleSeq) {
-    .Call('_TDAvec_computeNL', PACKAGE = 'TDAvec', D, homDim, scaleSeq)
+    .Call(`_TDAvec_computeNL`, D, homDim, scaleSeq)
 }
 
 computePES <- function(D, homDim, scaleSeq) {
-    .Call('_TDAvec_computePES', PACKAGE = 'TDAvec', D, homDim, scaleSeq)
+    .Call(`_TDAvec_computePES`, D, homDim, scaleSeq)
 }
 
 computePI <- function(D, homDim, xSeq, ySeq, sigma) {
-    .Call('_TDAvec_computePI', PACKAGE = 'TDAvec', D, homDim, xSeq, ySeq, sigma)
+    .Call(`_TDAvec_computePI`, D, homDim, xSeq, ySeq, sigma)
 }
 
 computePL <- function(D, homDim, scaleSeq, k = 1L) {
-    .Call('_TDAvec_computePL', PACKAGE = 'TDAvec', D, homDim, scaleSeq, k)
+    .Call(`_TDAvec_computePL`, D, homDim, scaleSeq, k)
 }
 
 computePS <- function(D, homDim, scaleSeq, p = 1L) {
-    .Call('_TDAvec_computePS', PACKAGE = 'TDAvec', D, homDim, scaleSeq, p)
+    .Call(`_TDAvec_computePS`, D, homDim, scaleSeq, p)
 }
 
 computeVAB <- function(D, homDim, scaleSeq) {
-    .Call('_TDAvec_computeVAB', PACKAGE = 'TDAvec', D, homDim, scaleSeq)
+    .Call(`_TDAvec_computeVAB`, D, homDim, scaleSeq)
+}
+
+computeVABarma <- function(D, homDim, scaleSeq, evaluate = "intervals") {
+    .Call(`_TDAvec_computeVABarma`, D, homDim, scaleSeq, evaluate)
 }
 
 computeVPB <- function(D, homDim, xSeq, ySeq, tau = 0.3) {
-    .Call('_TDAvec_computeVPB', PACKAGE = 'TDAvec', D, homDim, xSeq, ySeq, tau)
+    .Call(`_TDAvec_computeVPB`, D, homDim, xSeq, ySeq, tau)
 }
 
