@@ -5,6 +5,8 @@
 #include <Rcpp.h>
 
 using namespace Rcpp;
+using namespace arma;
+using namespace std;
 
 #ifdef RCPP_USE_GLOBAL_ROSTREAM
 Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
