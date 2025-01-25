@@ -11,104 +11,75 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// computeECC
-NumericVector computeECC(NumericMatrix D, int maxhomDim, NumericVector scaleSeq);
-RcppExport SEXP _TDAvec_computeECC(SEXP DSEXP, SEXP maxhomDimSEXP, SEXP scaleSeqSEXP) {
+// computeAF
+NumericVector computeAF(const mat& D, const int& homDim);
+RcppExport SEXP _TDAvec_computeAF(SEXP DSEXP, SEXP homDimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type maxhomDim(maxhomDimSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type scaleSeq(scaleSeqSEXP);
-    rcpp_result_gen = Rcpp::wrap(computeECC(D, maxhomDim, scaleSeq));
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeAF(D, homDim));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computeBetti
+NumericVector computeBetti(const mat& D, const int& homDim, const vec& scaleSeq, const string& evaluate);
+RcppExport SEXP _TDAvec_computeBetti(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP evaluateSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type scaleSeq(scaleSeqSEXP);
+    Rcpp::traits::input_parameter< const string& >::type evaluate(evaluateSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeBetti(D, homDim, scaleSeq, evaluate));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computeCP
+mat computeCP(const mat& D, const int& homDim, const int& m, string polyType);
+RcppExport SEXP _TDAvec_computeCP(SEXP DSEXP, SEXP homDimSEXP, SEXP mSEXP, SEXP polyTypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    Rcpp::traits::input_parameter< const int& >::type m(mSEXP);
+    Rcpp::traits::input_parameter< string >::type polyType(polyTypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeCP(D, homDim, m, polyType));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computeECC
+NumericVector computeECC(const mat& D, const vec& scaleSeq, const int& maxhomDim, const string& evaluate);
+RcppExport SEXP _TDAvec_computeECC(SEXP DSEXP, SEXP scaleSeqSEXP, SEXP maxhomDimSEXP, SEXP evaluateSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type scaleSeq(scaleSeqSEXP);
+    Rcpp::traits::input_parameter< const int& >::type maxhomDim(maxhomDimSEXP);
+    Rcpp::traits::input_parameter< const string& >::type evaluate(evaluateSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeECC(D, scaleSeq, maxhomDim, evaluate));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computeLimits
+NumericVector computeLimits(const field<mat>& Dlist, const int& homDim);
+RcppExport SEXP _TDAvec_computeLimits(SEXP DlistSEXP, SEXP homDimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const field<mat>& >::type Dlist(DlistSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeLimits(Dlist, homDim));
     return rcpp_result_gen;
 END_RCPP
 }
 // computeNL
-NumericVector computeNL(NumericMatrix D, int homDim, NumericVector scaleSeq);
-RcppExport SEXP _TDAvec_computeNL(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type scaleSeq(scaleSeqSEXP);
-    rcpp_result_gen = Rcpp::wrap(computeNL(D, homDim, scaleSeq));
-    return rcpp_result_gen;
-END_RCPP
-}
-// computePES
-NumericVector computePES(NumericMatrix D, int homDim, NumericVector scaleSeq);
-RcppExport SEXP _TDAvec_computePES(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type scaleSeq(scaleSeqSEXP);
-    rcpp_result_gen = Rcpp::wrap(computePES(D, homDim, scaleSeq));
-    return rcpp_result_gen;
-END_RCPP
-}
-// computePI
-NumericVector computePI(NumericMatrix D, int homDim, NumericVector xSeq, NumericVector ySeq, double sigma);
-RcppExport SEXP _TDAvec_computePI(SEXP DSEXP, SEXP homDimSEXP, SEXP xSeqSEXP, SEXP ySeqSEXP, SEXP sigmaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type xSeq(xSeqSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type ySeq(ySeqSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    rcpp_result_gen = Rcpp::wrap(computePI(D, homDim, xSeq, ySeq, sigma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// computePL
-NumericVector computePL(NumericMatrix D, int homDim, NumericVector scaleSeq, int k);
-RcppExport SEXP _TDAvec_computePL(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP kSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type scaleSeq(scaleSeqSEXP);
-    Rcpp::traits::input_parameter< int >::type k(kSEXP);
-    rcpp_result_gen = Rcpp::wrap(computePL(D, homDim, scaleSeq, k));
-    return rcpp_result_gen;
-END_RCPP
-}
-// computePS
-NumericVector computePS(NumericMatrix D, int homDim, NumericVector scaleSeq, int p);
-RcppExport SEXP _TDAvec_computePS(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP pSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type scaleSeq(scaleSeqSEXP);
-    Rcpp::traits::input_parameter< int >::type p(pSEXP);
-    rcpp_result_gen = Rcpp::wrap(computePS(D, homDim, scaleSeq, p));
-    return rcpp_result_gen;
-END_RCPP
-}
-// computeVAB
-NumericVector computeVAB(NumericMatrix D, int homDim, NumericVector scaleSeq);
-RcppExport SEXP _TDAvec_computeVAB(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type scaleSeq(scaleSeqSEXP);
-    rcpp_result_gen = Rcpp::wrap(computeVAB(D, homDim, scaleSeq));
-    return rcpp_result_gen;
-END_RCPP
-}
-// computeVABarma
-NumericVector computeVABarma(const arma::mat& D, const int& homDim, const arma::vec& scaleSeq, std::string evaluate);
-RcppExport SEXP _TDAvec_computeVABarma(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP evaluateSEXP) {
+NumericVector computeNL(const arma::mat& D, const int& homDim, const arma::vec& scaleSeq, std::string evaluate);
+RcppExport SEXP _TDAvec_computeNL(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP evaluateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -116,35 +87,141 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type scaleSeq(scaleSeqSEXP);
     Rcpp::traits::input_parameter< std::string >::type evaluate(evaluateSEXP);
-    rcpp_result_gen = Rcpp::wrap(computeVABarma(D, homDim, scaleSeq, evaluate));
+    rcpp_result_gen = Rcpp::wrap(computeNL(D, homDim, scaleSeq, evaluate));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computePES
+NumericVector computePES(const mat& D, const int& homDim, const vec& scaleSeq, string evaluate);
+RcppExport SEXP _TDAvec_computePES(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP evaluateSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type scaleSeq(scaleSeqSEXP);
+    Rcpp::traits::input_parameter< string >::type evaluate(evaluateSEXP);
+    rcpp_result_gen = Rcpp::wrap(computePES(D, homDim, scaleSeq, evaluate));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computePI
+NumericVector computePI(const mat& D, const int& homDim, const vec& xSeq, const vec& ySeq, const double& sigma);
+RcppExport SEXP _TDAvec_computePI(SEXP DSEXP, SEXP homDimSEXP, SEXP xSeqSEXP, SEXP ySeqSEXP, SEXP sigmaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type xSeq(xSeqSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type ySeq(ySeqSEXP);
+    Rcpp::traits::input_parameter< const double& >::type sigma(sigmaSEXP);
+    rcpp_result_gen = Rcpp::wrap(computePI(D, homDim, xSeq, ySeq, sigma));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computePL
+mat computePL(const mat& D, const int& homDim, const vec& scaleSeq, const int& k, const bool& generalized, const string& kernel, Nullable<double> h);
+RcppExport SEXP _TDAvec_computePL(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP kSEXP, SEXP generalizedSEXP, SEXP kernelSEXP, SEXP hSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type scaleSeq(scaleSeqSEXP);
+    Rcpp::traits::input_parameter< const int& >::type k(kSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type generalized(generalizedSEXP);
+    Rcpp::traits::input_parameter< const string& >::type kernel(kernelSEXP);
+    Rcpp::traits::input_parameter< Nullable<double> >::type h(hSEXP);
+    rcpp_result_gen = Rcpp::wrap(computePL(D, homDim, scaleSeq, k, generalized, kernel, h));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computePS
+NumericVector computePS(const mat& D, const int& homDim, const vec& scaleSeq, const double& p, const std::string& evaluate);
+RcppExport SEXP _TDAvec_computePS(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP pSEXP, SEXP evaluateSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type scaleSeq(scaleSeqSEXP);
+    Rcpp::traits::input_parameter< const double& >::type p(pSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type evaluate(evaluateSEXP);
+    rcpp_result_gen = Rcpp::wrap(computePS(D, homDim, scaleSeq, p, evaluate));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computeStats
+NumericVector computeStats(const mat& D, const int& homDim);
+RcppExport SEXP _TDAvec_computeStats(SEXP DSEXP, SEXP homDimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeStats(D, homDim));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computeTC
+NumericVector computeTC(const mat& D, const int& homDim, const int& r);
+RcppExport SEXP _TDAvec_computeTC(SEXP DSEXP, SEXP homDimSEXP, SEXP rSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    Rcpp::traits::input_parameter< const int& >::type r(rSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeTC(D, homDim, r));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computeTF
+NumericVector computeTF(const mat& D, const int& homDim, const double& delta, const int& d, const double& epsilon);
+RcppExport SEXP _TDAvec_computeTF(SEXP DSEXP, SEXP homDimSEXP, SEXP deltaSEXP, SEXP dSEXP, SEXP epsilonSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    Rcpp::traits::input_parameter< const double& >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< const int& >::type d(dSEXP);
+    Rcpp::traits::input_parameter< const double& >::type epsilon(epsilonSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeTF(D, homDim, delta, d, epsilon));
     return rcpp_result_gen;
 END_RCPP
 }
 // computeVPB
-NumericVector computeVPB(NumericMatrix D, int homDim, NumericVector xSeq, NumericVector ySeq, double tau);
+NumericVector computeVPB(const mat& D, const int& homDim, const vec& xSeq, const vec& ySeq, const double& tau);
 RcppExport SEXP _TDAvec_computeVPB(SEXP DSEXP, SEXP homDimSEXP, SEXP xSeqSEXP, SEXP ySeqSEXP, SEXP tauSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type D(DSEXP);
-    Rcpp::traits::input_parameter< int >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type xSeq(xSeqSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type ySeq(ySeqSEXP);
-    Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
+    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type xSeq(xSeqSEXP);
+    Rcpp::traits::input_parameter< const vec& >::type ySeq(ySeqSEXP);
+    Rcpp::traits::input_parameter< const double& >::type tau(tauSEXP);
     rcpp_result_gen = Rcpp::wrap(computeVPB(D, homDim, xSeq, ySeq, tau));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_TDAvec_computeECC", (DL_FUNC) &_TDAvec_computeECC, 3},
-    {"_TDAvec_computeNL", (DL_FUNC) &_TDAvec_computeNL, 3},
-    {"_TDAvec_computePES", (DL_FUNC) &_TDAvec_computePES, 3},
+    {"_TDAvec_computeAF", (DL_FUNC) &_TDAvec_computeAF, 2},
+    {"_TDAvec_computeBetti", (DL_FUNC) &_TDAvec_computeBetti, 4},
+    {"_TDAvec_computeCP", (DL_FUNC) &_TDAvec_computeCP, 4},
+    {"_TDAvec_computeECC", (DL_FUNC) &_TDAvec_computeECC, 4},
+    {"_TDAvec_computeLimits", (DL_FUNC) &_TDAvec_computeLimits, 2},
+    {"_TDAvec_computeNL", (DL_FUNC) &_TDAvec_computeNL, 4},
+    {"_TDAvec_computePES", (DL_FUNC) &_TDAvec_computePES, 4},
     {"_TDAvec_computePI", (DL_FUNC) &_TDAvec_computePI, 5},
-    {"_TDAvec_computePL", (DL_FUNC) &_TDAvec_computePL, 4},
-    {"_TDAvec_computePS", (DL_FUNC) &_TDAvec_computePS, 4},
-    {"_TDAvec_computeVAB", (DL_FUNC) &_TDAvec_computeVAB, 3},
-    {"_TDAvec_computeVABarma", (DL_FUNC) &_TDAvec_computeVABarma, 4},
+    {"_TDAvec_computePL", (DL_FUNC) &_TDAvec_computePL, 7},
+    {"_TDAvec_computePS", (DL_FUNC) &_TDAvec_computePS, 5},
+    {"_TDAvec_computeStats", (DL_FUNC) &_TDAvec_computeStats, 2},
+    {"_TDAvec_computeTC", (DL_FUNC) &_TDAvec_computeTC, 3},
+    {"_TDAvec_computeTF", (DL_FUNC) &_TDAvec_computeTF, 5},
     {"_TDAvec_computeVPB", (DL_FUNC) &_TDAvec_computeVPB, 5},
     {NULL, NULL, 0}
 };
