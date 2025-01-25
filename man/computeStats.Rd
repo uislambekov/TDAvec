@@ -38,6 +38,10 @@ A (named) 38-dimensional numeric vector containing:
 Umar Islambekov
 }
 
+\references{
+1. Ali, D., Asaad, A., Jimenez, M.J., Nanda, V., Paluzo-Hidalgo, E. and Soriano-Trigueros, M., (2023). A survey of vectorization methods in topological data analysis. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+}
+
 \examples{
 N <- 100
 set.seed(123)
