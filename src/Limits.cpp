@@ -26,7 +26,8 @@ NumericVector findMinMax(const mat& pd, const int& homDim) {
 
 // [[Rcpp::export]]
 NumericVector computeLimits(const field<mat>& Dlist, const int& homDim) {
-  int n = Dlist.n_elem;
+// Compute extreme valus of birth, death and persistence
+    int n = Dlist.n_elem;
   NumericVector minB(n), maxB(n), maxD(n), minP(n), maxP(n);
 
   for (int k = 0; k < n; ++k) {
