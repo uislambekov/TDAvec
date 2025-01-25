@@ -5,26 +5,42 @@
 \title{A Vector Summary of the Persistent Entropy Summary Function}
 
 \description{
-For a given persistence diagram \eqn{D=\{(b_i,d_i)\}_{i=1}^N}, \code{computePES()} vectorizes the persistent entropy summary (PES) function \deqn{S(t)=-\sum_{i=1}^N \frac{l_i}{L}\log_2{(\frac{l_i}{L}})\bold 1_{[b_i,d_i]}(t),} where \eqn{l_i=d_i-b_i} and \eqn{L=\sum_{i=1}^Nl_i}. Points of \eqn{D} with infinite death value are ignored
+
+For a given persistence diagram \eqn{D={(b_i,d_i)}_{i=1}^N} (corresponding to a specified homological dimension), \code{computePES()} vectorizes the persistent entropy summary (PES) function \deqn{S(t)=-\sum_{i=1}^N \frac{l_i}{L}\log_2{(\frac{l_i}{L}})\bold 1_{[b_i,d_i]}(t),} where \eqn{l_i=d_i-b_i} and \eqn{L=\sum_{i=1}^Nl_i}, based on a scale sequence \code{scaleSeq}. If \eqn{N=1}, \eqn{L} is set to 1. The evaluation method depends on the argument \code{evaluate}. Points in \eqn{D} with infinite death values are ignored.
 }
 
 \usage{
-computePES(D, homDim, scaleSeq)
+computePES(D, homDim, scaleSeq evaluate = "intervals")
 }
 
 \arguments{
-\item{D}{matrix with three columns containing the dimension, birth and death values respectively}
+\item{D}{a persistence diagram: a matrix with three columns containing the homological dimension, birth and death values respectively.}
 
-\item{homDim}{homological dimension (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.)}
+\item{homDim}{the homological dimension (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.). Rows in \code{D} are filtered based on this value.}
 
-\item{scaleSeq}{numeric vector of increasing scale values used for vectorization}
+\item{scaleSeq}{a numeric vector of increasing scale values used for vectorization.}
+
+\item{evaluate}{a character string indicating the evaluation method. Must be either \code{"intervals"} (default) or \code{"points"}.}
 
 }
 
+\details{
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{scaleSeq}.
+
+}
 \value{
-A numeric vector whose elements are the average values of the persistent entropy summary function computed between each pair of consecutive scale points of \code{scaleSeq}=\eqn{\{t_1,t_2,\ldots,t_n\}}:
-\deqn{\Big(\frac{1}{\Delta t_1}\int_{t_1}^{t_2}S(t)dt,\frac{1}{\Delta t_2}\int_{t_2}^{t_3}S(t)dt,\ldots,\frac{1}{\Delta t_{n-1}}\int_{t_{n-1}}^{t_n}S(t)dt\Big),}
-where \eqn{\Delta t_k=t_{k+1}-t_k}
+A numeric vector containing elements computed using \code{scaleSeq}=\eqn{\{t_1,t_2,\ldots,t_n\}} according to the method specified by \code{evaluate}.
+
+\itemize{
+  \item \code{"intervals"}: Computes average values of the persistent entropy summary function over intervals defined by consecutive elements in \code{scaleSeq}:
+
+  \deqn{\Big(\frac{1}{\Delta t_1}\int_{t_1}^{t_2}S(t)dt,\frac{1}{\Delta t_2}\int_{t_2}^{t_3}S(t)dt,\ldots,\frac{1}{\Delta t_{n-1}}\int_{t_{n-1}}^{t_n}S(t)dt\Big)\in\mathbb{R}^{n-1},}
+where \eqn{\Delta t_k=t_{k+1}-t_k}.
+
+  \item \code{"points"}: Computes values of the persistent entropy summary function at each point in \code{scaleSeq}:
+
+  \deqn{(S(t_1),S(t_2),\ldots,S(t_n))\in\mathbb{R}^n.}
+}
 }
 
 \author{Umar Islambekov}
@@ -34,19 +50,19 @@ where \eqn{\Delta t_k=t_{k+1}-t_k}
 }
 
 \examples{
-N <- 100 
+N <- 100
 set.seed(123)
 # sample N points uniformly from unit circle and add Gaussian noise
 X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
 
 # compute a persistence diagram using the Rips filtration built on top of X
-D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram 
+D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram
 
 scaleSeq = seq(0,2,length.out=11) # sequence of scale values
 
-# compute PES for homological dimension H_0
+# compute a vector summary of PES for homological dimension H_0
 computePES(D,homDim=0,scaleSeq)
 
-# compute PES for homological dimension H_1
+# compute a vector summary of PES for homological dimension H_1
 computePES(D,homDim=1,scaleSeq)
 }

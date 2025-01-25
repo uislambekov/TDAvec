@@ -5,27 +5,37 @@
 \title{A Vector Summary of the Euler Characteristic Curve}
 
 \description{
-Vectorizes the Euler characteristic curve \deqn{\chi(t)=\sum_{k=0}^d (-1)^k\beta_k(t),} where \eqn{\beta_0,\beta_1,\ldots,\beta_d} are the Betti curves corresponding to persistence diagrams \eqn{D_0,D_1,\ldots,D_d} of dimensions \eqn{0,1,\ldots,d} respectively, all computed from the same filtration
+Vectorizes the Euler characteristic curve (ECC) \deqn{\chi(t)=\sum_{k=0}^d (-1)^k\beta_k(t),} where \eqn{\beta_0,\beta_1,\ldots,\beta_d} are the Betti curves corresponding to persistence diagrams \eqn{D_0,D_1,\ldots,D_d} of dimensions \eqn{0,1,\ldots,d} respectively, all computed from the same filtration. The evaluation method depends on the argument \code{evaluate}.
 }
 
 \usage{
-computeECC(D, maxhomDim, scaleSeq)
+computeECC(D, scaleSeq, maxhomDim = -1, evaluate = "intervals")
 }
 
 \arguments{
-\item{D}{matrix with three columns containing the dimension, birth and death values respectively}
+\item{D}{a persistence diagram: a matrix with three columns containing the homological dimension, birth and death values respectively.}
 
-\item{maxhomDim}{maximum homological dimension considered (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.)}
+\item{scaleSeq}{a numeric vector of increasing scale values used for vectorization.}
 
-\item{scaleSeq}{numeric vector of increasing scale values used for vectorization}
+\item{maxhomDim}{the maximum homological dimension considered (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.). If set to -1 (default), it uses the maximum dimension found in \code{D}.}
+
+\item{evaluate}{a character string indicating the evaluation method. Must be either \code{"intervals"} (default) or \code{"points"}.}
 
 }
 
 \value{
-A numeric vector whose elements are the average values of the Euler characteristic curve computed between each pair of
-consecutive scale points of \code{scaleSeq}=\eqn{\{t_1,t_2,\ldots,t_n\}}:
-\deqn{\Big(\frac{1}{\Delta t_1}\int_{t_1}^{t_2}\chi(t)dt,\frac{1}{\Delta t_2}\int_{t_2}^{t_3}\chi(t)dt,\ldots,\frac{1}{\Delta t_{n-1}}\int_{t_{n-1}}^{t_n}\chi(t)dt\Big),}
-where \eqn{\Delta t_k=t_{k+1}-t_k}
+A numeric vector containing elements computed using \code{scaleSeq}=\eqn{\{t_1,t_2,\ldots,t_n\}} according to the method specified by \code{evaluate}.
+
+\itemize{
+  \item \code{"intervals"}: Computes average values of the Euler characteristic curve over intervals defined by consecutive elements in \code{scaleSeq}:
+
+  \deqn{\Big(\frac{1}{\Delta t_1}\int_{t_1}^{t_2}\chi(t)dt,\frac{1}{\Delta t_2}\int_{t_2}^{t_3}\chi(t)dt,\ldots,\frac{1}{\Delta t_{n-1}}\int_{t_{n-1}}^{t_n}\chi(t)dt\Big)\in\mathbb{R}^{n-1},}
+where \eqn{\Delta t_k=t_{k+1}-t_k}.
+
+  \item \code{"points"}: Computes values of the Euler characteristic curve at each point in \code{scaleSeq}:
+
+  \deqn{(\chi(t_1),\chi(t_2),\ldots,\chi(t_n))\in\mathbb{R}^n.}
+}
 }
 
 \author{Umar Islambekov}
@@ -35,16 +45,16 @@ where \eqn{\Delta t_k=t_{k+1}-t_k}
 }
 
 \examples{
-N <- 100 
+N <- 100
 set.seed(123)
 # sample N points uniformly from unit circle and add Gaussian noise
 X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
 
 # compute a persistence diagram using the Rips filtration built on top of X
-D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram 
+D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram
 
 scaleSeq = seq(0,2,length.out=11) # sequence of scale values
 
-# compute ECC 
-computeECC(D,maxhomDim=1,scaleSeq)
+# compute a vector summary of ECC
+computeECC(D,scaleSeq)
 }

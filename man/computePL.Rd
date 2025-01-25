@@ -2,12 +2,12 @@
 % Please edit documentation in R/RcppExports.R
 \name{computePL}
 \alias{computePL}
-\title{A Vector Summary of the Persistence Landscape Function}
+\title{Vector Summaries of the Persistence Landscape Functions}
 
 \description{
-Vectorizes the persistence landscape (PL) function constructed from a given persistence diagram. The \eqn{k}th order landscape function of a persistence diagram \eqn{D=\{(b_i,d_i)\}_{i=1}^N} is defined as 
-\deqn{\lambda_k(t) = k\hbox{max}_{1\leq i \leq N} \Lambda_i(t), \quad k\in N,}
-where \eqn{k\hbox{max}} returns the \eqn{k}th largest value and 
+For a given persistence diagram \eqn{D=\{(b_i,d_i)\}_{i=1}^N} (corresponding to a specified homological dimension), \code{computePL()} vectorizes the first \eqn{k} persistence landscape (PL) functions
+\deqn{\lambda_j(t) = j\hbox{max}_{1\leq i \leq N} \Lambda_i(t), \quad j=1,\dots,k,}
+where \eqn{j\hbox{max}} returns the \eqn{j}th largest value and
 \deqn{\Lambda_i(t) = \left\{
         \begin{array}{ll}
             t-b_i & \quad t\in [b_i,\frac{b_i+d_i}{2}] \\
@@ -15,49 +15,83 @@ where \eqn{k\hbox{max}} returns the \eqn{k}th largest value and
             0 & \quad \hbox{otherwise}
         \end{array}
     \right.}
+based on a scale sequence \code{scaleSeq}. For \emph{generalized} persistence landscape functions, we instead take
+\deqn{\Lambda_i(t) = \left\{
+        \begin{array}{ll}
+            \frac{d_i-b_i}{2K_h(0)}K_h(t-\frac{b_i+d_i}{2}) & \hbox{for } |\frac{t-\frac{b_i+d_i}{2}}{h}| \leq 1 \\
+            0 & \hbox{otherwise}
+        \end{array}
+    \right.}
+where \eqn{K_h(\cdot)} is a kernel function with the bandwidth parameter \eqn{h.}
 }
+
 
 \usage{
-computePL(D, homDim, scaleSeq, k=1)
+computePL(D, homDim, scaleSeq, k = 1, generalized = FALSE, kernel = "triangle", h = NULL)
 }
 \arguments{
-\item{D}{matrix with three columns containing the dimension, birth and death values respectively}
+\item{D}{a persistence diagram: a matrix with three columns containing the homological dimension, birth and death values respectively.}
 
-\item{homDim}{homological dimension (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.)}
+\item{homDim}{the homological dimension (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.). Rows in \code{D} are filtered based on this value.}
 
-\item{scaleSeq}{numeric vector of increasing scale values used for vectorization}
+\item{scaleSeq}{a numeric vector of increasing scale values used for vectorization.}
 
-\item{k}{order of landscape function. By default, \code{k=1}}
+  \item{k}{an integer specifying the number of persistence landscape functions to consider (default is 1).  Must be less than or equal to the number of points in the diagram.}
+
+  \item{generalized}{a logical value indicating whether to use a generalized persistence landscape or not. Default is FALSE.}
+
+  \item{kernel}{a string specifying the kernel type to use if \code{generalized = TRUE}. Options are "triangle", "epanechnikov", or "tricubic". Default is "triangle".}
+
+  \item{h}{a positive numeric value specifying the bandwidth for the kernel. Must be provided if  \code{generalized = TRUE}.}
 }
 
+\details{
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{scaleSeq}. If  \code{generalized = TRUE}, three different kernel functions are currently supported:
+  \itemize{
+    \item Triangle kernel: \eqn{K_h(t) = \frac{1}{h} \max(0, 1 - \frac{|t|}{h})}
+    \item Epanechnikov kernel: \eqn{K_h(t) = \frac{3}{4h} \max(0, 1 - \frac{t^2}{h^2})}
+    \item Tricubic kernel: \eqn{K_h(t) = \frac{70}{81h} \max(0, (1 - \frac{|t|^3}{h^3})^3)}
+  }
+}
 
 \value{
-A numeric vector whose elements are the values of the \eqn{k}th order landscape function evaluated at each point of \code{scaleSeq}=\eqn{\{t_1,t_2,\ldots,t_n\}}:
-\deqn{(\lambda_k(t_1),\lambda_k(t_2),\ldots,\lambda_k(t_n))}
+A matrix where the \eqn{j}th column contains the values of the \eqn{j}th order persistence landscape function evaluated at each point of \code{scaleSeq}=\eqn{\{t_1,t_2,\ldots,t_n\}}:
+
+\deqn{
+\begin{bmatrix}
+\lambda_1(t_1) & \lambda_2(t_1) &  \cdots & \lambda_k(t_1) \\
+\lambda_1(t_2) & \lambda_2(t_2) & \cdots & \lambda_k(t_2)\\
+\vdots & \vdots& \ddots & \vdots \\
+\lambda_1(t_n) & \lambda_2(t_n) & \cdots & \lambda_k(t_n)
+\end{bmatrix}
+}
 }
 
 \author{Umar Islambekov}
 
 \references{
-1. Bubenik, P. (2015). Statistical topological data analysis using persistence landscapes. Journal of Machine Learning Research, 16(1), 77-102. 
+1. Bubenik, P. (2015). Statistical topological data analysis using persistence landscapes. Journal of Machine Learning Research, 16(1), 77-102.
 
 2. Chazal, F., Fasy, B. T., Lecci, F., Rinaldo, A., & Wasserman, L. (2014, June). Stochastic convergence of persistence landscapes and silhouettes. In Proceedings of the thirtieth annual symposium on Computational geometry (pp. 474-483).
+
+3. Berry, E., Chen, Y. C., Cisewski-Kehe, J., & Fasy, B. T. (2020). Functional summaries of persistence diagrams. Journal of Applied and Computational Topology, 4(2):211–262.
 }
 
 \examples{
-N <- 100 
+N <- 100
 set.seed(123)
 # sample N points uniformly from unit circle and add Gaussian noise
 X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
 
 # compute a persistence diagram using the Rips filtration built on top of X
-D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram 
+D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram
 
 scaleSeq = seq(0,2,length.out=11) # sequence of scale values
 
-# compute persistence landscape (PL) for homological dimension H_0 with order of landscape k=1
-computePL(D,homDim=0,scaleSeq,k=1)
+# compute vector summaries of the first three PL functions for homological dimension H_1
+computePL(D,homDim=1,scaleSeq,k=3)
 
-# compute persistence landscape (PL) for homological dimension H_1 with order of landscape k=1
-computePL(D,homDim=1,scaleSeq,k=1)
+# compute vector summaries of the first three generalized PL functions (with triangle kernel and bandwidth h=0.2) for homological dimension H_1
+computePL(D,homDim=1,scaleSeq,generalized=TRUE,k=3,h=0.2)
+
 }

@@ -5,9 +5,9 @@
 \title{A Vector Summary of the Persistence Surface}
 
 \description{
-For a given persistence diagram \eqn{D=\{(b_i,p_i)\}_{i=1}^N}, \code{computePI()} computes the persistence image (PI) - a vector summary of the persistence surface: \deqn{\rho(x,y)=\sum_{i=1}^N f(b_i,p_i)\phi_{(b_i,p_i)}(x,y),} where \eqn{\phi_{(b_i,p_i)}(x,y)} is 
-the Gaussian distribution with mean \eqn{(b_i,p_i)} and 
-covariance matrix \eqn{\sigma^2 I_{2\times 2}} and 
+For a given persistence diagram \eqn{D=\{(b_i,p_i)\}_{i=1}^N} (corresponding to a specified homological dimension), \code{computePI()} computes the persistence image (PI) - a vector summary of the persistence surface: \deqn{\rho(x,y)=\sum_{i=1}^N f(b_i,p_i)\phi_{(b_i,p_i)}(x,y),} where \eqn{\phi_{(b_i,p_i)}(x,y)} is
+the Gaussian distribution with mean \eqn{(b_i,p_i)} and
+covariance matrix \eqn{\sigma^2 I_{2\times 2}} and
 \deqn{f(b,p) = w(p)=\left\{
         \begin{array}{ll}
             0 & \quad p\leq 0 \\
@@ -15,7 +15,7 @@ covariance matrix \eqn{\sigma^2 I_{2\times 2}} and
             1& \quad p\geq p_{max}
         \end{array}
     \right.}
-is the weighting function with \eqn{p_{max}} being the maximum persistence value among all persistence diagrams considered in the experiment. Points of \eqn{D} with infinite persistence value are ignored
+is the weighting function with \eqn{p_{max}} being the maximum persistence value among all persistence diagrams considered in the experiment. Points in \eqn{D} with infinite persistence values are ignored.
 }
 
 \usage{
@@ -23,22 +23,28 @@ computePI(D, homDim, xSeq, ySeq, sigma)
 }
 
 \arguments{
-\item{D}{matrix with three columns containing the dimension, birth and persistence values respectively}
+\item{D}{a persistence diagram: a matrix with three columns containing the homological dimension, \emph{birth} and \emph{persistence} values respectively.}
 
-\item{homDim}{homological dimension (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.)}
+\item{homDim}{the homological dimension (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.). Rows in \code{D} are filtered based on this value.}
 
-\item{xSeq}{numeric vector of increasing x (birth) values used for vectorization}
+\item{xSeq}{a numeric vector of increasing x (birth) values used for vectorization.}
 
-\item{ySeq}{numeric vector of increasing y (persistence) values used for vectorization}
+\item{ySeq}{a numeric vector of increasing y (persistence) values used for vectorization.}
 
-\item{sigma}{standard deviation of the Gaussian}
+\item{sigma}{a standard deviation (\eqn{\sigma}) of the Gaussian.}
 }
 
 \value{
 A numeric vector whose elements are the average values of the persistence surface computed over each cell of the two-dimensional grid constructred from \code{xSeq}=\eqn{\{x_1,x_2,\ldots,x_n\}} and \code{ySeq}=\eqn{\{y_1,y_2,\ldots,y_m\}}:
 
-\deqn{\Big(\frac{1}{\Delta x_1\Delta y_1}\int_{[x_1,x_2]\times [y_1,y_2]}\rho(x,y)dA,\ldots,\frac{1}{\Delta x_{n-1}\Delta y_{m-1}}\int_{[x_{n-1},x_n]\times [y_{m-1},y_m]}\rho(x,y)dA\Big),}
-where \eqn{dA=dxdy}, \eqn{\Delta x_k=x_{k+1}-x_k} and \eqn{\Delta y_j=y_{j+1}-y_j}
+\deqn{\Big(\frac{1}{\Delta x_1\Delta y_1}\int_{[x_1,x_2]\times [y_1,y_2]}\rho(x,y)dA,\ldots,\frac{1}{\Delta x_{n-1}\Delta y_{m-1}}\int_{[x_{n-1},x_n]\times [y_{m-1},y_m]}\rho(x,y)dA\Big)\in\mathbb{R}^{d},}
+where \eqn{d=(n-1)(m-1)}, \eqn{dA=dxdy}, \eqn{\Delta x_k=x_{k+1}-x_k} and \eqn{\Delta y_j=y_{j+1}-y_j.}
+
+If \code{homDim=0} and all the birth values are equal (e.g., zero), univariate Gaussians are used instead for vectorization:
+
+\deqn{\Big(\frac{1}{\Delta y_1}\int_{y_1}^{y_2}\rho(y)dy,\ldots,\frac{1}{\Delta y_{m-1}}\int_{y_{m-1}}^{y_m}\rho(y)dy\Big)\in\mathbb{R}^{m-1},}
+where \eqn{\rho(y)=\sum_{i=1}^N f(p_i)\phi_{p_i}(y)} and \eqn{\Delta y_j=y_{j+1}-y_j.}
+
 }
 
 \author{Umar Islambekov}
@@ -49,26 +55,26 @@ where \eqn{dA=dxdy}, \eqn{\Delta x_k=x_{k+1}-x_k} and \eqn{\Delta y_j=y_{j+1}-y_
 
 
 \examples{
-N <- 100 
+N <- 100
 set.seed(123)
 # sample N points uniformly from unit circle and add Gaussian noise
 X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
 
 # compute a persistence diagram using the Rips filtration built on top of X
-D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram 
+D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram
 
 # switch from the birth-death to the birth-persistence coordinates
-D[,3] <- D[,3] - D[,2] 
+D[,3] <- D[,3] - D[,2]
 colnames(D)[3] <- "Persistence"
 
 resB <- 5 # resolution (or grid size) along the birth axis
-resP <- 5 # resolution (or grid size) along the persistence axis 
+resP <- 5 # resolution (or grid size) along the persistence axis
 
 # compute PI for homological dimension H_0
 minPH0 <- min(D[D[,1]==0,3]); maxPH0 <- max(D[D[,1]==0,3])
 ySeqH0 <- seq(minPH0,maxPH0,length.out=resP+1)
-sigma <- 0.5*(maxPH0-minPH0)/resP 
-computePI(D,homDim=0,xSeq=NA,ySeqH0,sigma) 
+sigma <- 0.5*(maxPH0-minPH0)/resP
+computePI(D,homDim=0,xSeq=NA,ySeqH0,sigma)
 
 # compute PI for homological dimension H_1
 minBH1 <- min(D[D[,1]==1,2]); maxBH1 <- max(D[D[,1]==1,2])
@@ -76,5 +82,5 @@ minPH1 <- min(D[D[,1]==1,3]); maxPH1 <- max(D[D[,1]==1,3])
 xSeqH1 <- seq(minBH1,maxBH1,length.out=resB+1)
 ySeqH1 <- seq(minPH1,maxPH1,length.out=resP+1)
 sigma <- 0.5*(maxPH1-minPH1)/resP
-computePI(D,homDim=1,xSeqH1,ySeqH1,sigma) 
+computePI(D,homDim=1,xSeqH1,ySeqH1,sigma)
 }

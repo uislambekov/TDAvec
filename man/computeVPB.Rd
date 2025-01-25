@@ -5,29 +5,36 @@
 \title{A Vector Summary of the Persistence Block}
 
 \description{
-For a given persistence diagram \eqn{D=\{(b_i,p_i)\}_{i=1}^N}, \code{computeVPB()} vectorizes the persistence block \deqn{f(x,y)=\sum_{i=1}^N \bold 1_{E(b_i,p_i)}(x,y),} where \eqn{E(b_i,p_i)=[b_i-\frac{\lambda_i}{2},b_i+\frac{\lambda_i}{2}]\times [p_i-\frac{\lambda_i}{2},p_i+\frac{\lambda_i}{2}]} and \eqn{\lambda_i=2\tau p_i} with \eqn{\tau\in (0,1]}. Points of \eqn{D} with infinite persistence value are ignored
+For a given persistence diagram \eqn{D=\{(b_i,p_i)\}_{i=1}^N} (corresponding to a specified homological dimension), \code{computeVPB()} vectorizes the persistence block \deqn{f(x,y)=\sum_{i=1}^N \bold 1_{E(b_i,p_i)}(x,y),} where \eqn{E(b_i,p_i)=[b_i-\frac{\lambda_i}{2},b_i+\frac{\lambda_i}{2}]\times [p_i-\frac{\lambda_i}{2},p_i+\frac{\lambda_i}{2}]} and \eqn{\lambda_i=2\tau p_i} with \eqn{\tau\in (0,1]}. Points in \eqn{D} with infinite persistence values are ignored.
 }
 
 \usage{
 computeVPB(D, homDim, xSeq, ySeq, tau=0.3)
 }
 \arguments{
-\item{D}{matrix with three columns containing the dimension, birth and persistence values respectively}
+\item{D}{a persistence diagram: a matrix with three columns containing the homological dimension, \emph{birth} and \emph{persistence} values respectively.}
 
-\item{homDim}{homological dimension (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.)}
+\item{homDim}{the homological dimension (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.). Rows in \code{D} are filtered based on this value.}
 
-\item{xSeq}{numeric vector of increasing x (birth) values used for vectorization}
+\item{xSeq}{a numeric vector of increasing x (birth) values used for vectorization.}
 
-\item{ySeq}{numeric vector of increasing y (persistence) values used for vectorization}
+\item{ySeq}{a numeric vector of increasing y (persistence) values used for vectorization.}
 
-\item{tau}{parameter (between 0 and 1) controlling block size. By default, \code{tau=0.3}}
+
+\item{tau}{a parameter (between 0 and 1) controlling block sizes. Default is \code{tau=0.3}.}
 }
 
 \value{
 A numeric vector whose elements are the weighted averages of the persistence block computed over each cell of the two-dimensional grid constructred from \code{xSeq}=\eqn{\{x_1,x_2,\ldots,x_n\}} and \code{ySeq}=\eqn{\{y_1,y_2,\ldots,y_m\}}:
 
-\deqn{\Big(\frac{1}{\Delta x_1\Delta y_1}\int_{[x_1,x_2]\times [y_1,y_2]}f(x,y)wdA,\ldots,\frac{1}{\Delta x_{n-1}\Delta y_{m-1}}\int_{[x_{n-1},x_n]\times [y_{m-1},y_m]}f(x,y)wdA\Big),}
-where \eqn{wdA=(x+y)dxdy}, \eqn{\Delta x_k=x_{k+1}-x_k} and \eqn{\Delta y_j=y_{j+1}-y_j}
+\deqn{\Big(\frac{1}{\Delta x_1\Delta y_1}\int_{[x_1,x_2]\times [y_1,y_2]}f(x,y)wdA,\ldots,\frac{1}{\Delta x_{n-1}\Delta y_{m-1}}\int_{[x_{n-1},x_n]\times [y_{m-1},y_m]}f(x,y)wdA\Big)\in\mathbb{R}^{d},}
+where \eqn{d=(n-1)(m-1)}, \eqn{wdA=(x+y)dxdy}, \eqn{\Delta x_k=x_{k+1}-x_k} and \eqn{\Delta y_j=y_{j+1}-y_j.}
+
+If \code{homDim=0} and all the birth values are equal (e.g., zero), univariate persistence block functions are used instead for vectorization:
+
+\deqn{\Big(\frac{1}{\Delta y_1}\int_{y_1}^{y_2}f(y)ydy,\ldots,\frac{1}{\Delta y_{m-1}}\int_{y_{m-1}}^{y_m}f(y)ydy\Big)\in\mathbb{R}^{m-1},}
+where \eqn{f(y)=\sum_{i=1}^N \bold 1_{[p_i-\frac{\lambda_i}{2},p_i+\frac{\lambda_i}{2}]}(y)} and \eqn{\Delta y_j=y_{j+1}-y_j.}
+
 }
 
 \author{Umar Islambekov, Aleksei Luchinsky}
@@ -37,26 +44,27 @@ where \eqn{wdA=(x+y)dxdy}, \eqn{\Delta x_k=x_{k+1}-x_k} and \eqn{\Delta y_j=y_{j
 }
 
 \examples{
-N <- 100 
+N <- 100
 set.seed(123)
 # sample N points uniformly from unit circle and add Gaussian noise
 X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
 
 # compute a persistence diagram using the Rips filtration built on top of X
-D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram 
+D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram
 
 # switch from the birth-death to the birth-persistence coordinates
-D[,3] <- D[,3] - D[,2] 
+D[,3] <- D[,3] - D[,2]
 colnames(D)[3] <- "Persistence"
 
 # construct one-dimensional grid of scale values
-ySeqH0 <- unique(quantile(D[D[,1]==0,3],probs = seq(0,1,by=0.2))) 
-tau <- 0.3 # parameter in [0,1] which controls the size of blocks around each point of the diagram 
+ySeqH0 <- unique(quantile(D[D[,1]==0,3],probs = seq(0,1,by=0.2)))
+tau <- 0.3 # parameter in [0,1] which controls the size of blocks around each point of the diagram
+
 # compute VPB for homological dimension H_0
 computeVPB(D,homDim = 0,xSeq=NA,ySeqH0,tau)
 
 xSeqH1 <- unique(quantile(D[D[,1]==1,2],probs = seq(0,1,by=0.2)))
 ySeqH1 <- unique(quantile(D[D[,1]==1,3],probs = seq(0,1,by=0.2)))
 # compute VPB for homological dimension H_1
-computeVPB(D,homDim = 1,xSeqH1,ySeqH1,tau) 
+computeVPB(D,homDim = 1,xSeqH1,ySeqH1,tau)
 }

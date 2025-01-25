@@ -5,7 +5,7 @@
 \title{A Vector Summary of the Persistence Silhouette Function}
 
 \description{
-Vectorizes the persistence silhouette (PS) function constructed from a given persistence diagram. The \eqn{p}th power silhouette function of a persistence diagram \eqn{D=\{(b_i,d_i)\}_{i=1}^N} is defined as 
+For a given persistence diagram \eqn{D=\{(b_i,d_i)\}_{i=1}^N} (corresponding to a specified homological dimension), \code{computePS()} vectorizes the \eqn{p}th power persistence silhouette (PS) function
 \deqn{\phi_p(t) = \frac{\sum_{i=1}^N |d_i-b_i|^p\Lambda_i(t)}{\sum_{i=1}^N |d_i-b_i|^p},}
 where
 \deqn{\Lambda_i(t) = \left\{
@@ -15,28 +15,43 @@ where
             0 & \quad \hbox{otherwise}
         \end{array}
     \right.}
-Points of \eqn{D} with infinite death value are ignored
+based on a scale sequence \code{scaleSeq}. The evaluation method depends on the argument \code{evaluate}. Points in \eqn{D} with infinite death values are ignored.
 }
 
+
 \usage{
-computePS(D, homDim, scaleSeq, p=1)
+computePS(D, homDim, scaleSeq, p = 1.0, evaluate = "intervals")
 }
 
 \arguments{
-\item{D}{matrix with three columns containing the dimension, birth and death values respectively}
+\item{D}{a persistence diagram: a matrix with three columns containing the homological dimension, birth and death values respectively.}
 
-\item{homDim}{homological dimension (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.)}
+\item{homDim}{the homological dimension (0 for \eqn{H_0}, 1 for \eqn{H_1}, etc.). Rows in \code{D} are filtered based on this value.}
 
-\item{scaleSeq}{numeric vector of increasing scale values used for vectorization}
+\item{scaleSeq}{a numeric vector of increasing scale values used for vectorization.}
 
-\item{p}{power of the weights for the silhouette function. By default, \code{p=1}}
+\item{p}{power of the weights for the silhouette function. By default, \code{p=1.}}
+
+\item{evaluate}{a character string indicating the evaluation method. Must be either \code{"intervals"} (default) or \code{"points"}.}
 }
 
+\details{
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{scaleSeq}.
+
+}
 \value{
-A numeric vector whose elements are the average values of the \eqn{p}th power silhouette function computed between each pair of
-consecutive scale points of \code{scaleSeq}=\eqn{\{t_1,t_2,\ldots,t_n\}}:
-\deqn{\Big(\frac{1}{\Delta t_1}\int_{t_1}^{t_2}\phi_p(t) dt,\frac{1}{\Delta t_2}\int_{t_2}^{t_3}\phi_p(t)dt,\ldots,\frac{1}{\Delta t_{n-1}}\int_{t_{n-1}}^{t_n}\phi_p(t)dt\Big),}
-where \eqn{\Delta t_k=t_{k+1}-t_k}
+A numeric vector containing elements computed using \code{scaleSeq}=\eqn{\{t_1,t_2,\ldots,t_n\}} according to the method specified by \code{evaluate}.
+
+\itemize{
+  \item \code{"intervals"}: Computes average values of the persistence silhouette function over intervals defined by consecutive elements in \code{scaleSeq}:
+
+  \deqn{\Big(\frac{1}{\Delta t_1}\int_{t_1}^{t_2}\phi_p(t)dt,\frac{1}{\Delta t_2}\int_{t_2}^{t_3}\phi_p(t)dt,\ldots,\frac{1}{\Delta t_{n-1}}\int_{t_{n-1}}^{t_n}\phi_p(t)dt\Big)\in\mathbb{R}^{n-1},}
+where \eqn{\Delta t_k=t_{k+1}-t_k}.
+
+  \item \code{"points"}: Computes values of the persistence silhouette function at each point in \code{scaleSeq}:
+
+  \deqn{(\phi_p(t_1),\phi_p(t_2),\ldots,\phi_p(t_n))\in\mathbb{R}^n.}
+}
 }
 
 \author{Umar Islambekov}
@@ -46,19 +61,19 @@ where \eqn{\Delta t_k=t_{k+1}-t_k}
 }
 
 \examples{
-N <- 100 
+N <- 100
 set.seed(123)
 # sample N points uniformly from unit circle and add Gaussian noise
 X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
 
 # compute a persistence diagram using the Rips filtration built on top of X
-D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram 
+D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram
 
 scaleSeq = seq(0,2,length.out=11) # sequence of scale values
 
-# compute persistence silhouette (PS) for homological dimension H_0
-computePS(D,homDim=0,scaleSeq,p=1)
+# compute a vector summary of PS for homological dimension H_0
+computePS(D,homDim=0,scaleSeq)
 
-# compute persistence silhouette (PS) for homological dimension H_1
-computePS(D,homDim=1,scaleSeq,p=1)
+# compute a vector summary of PS for homological dimension H_1
+computePS(D,homDim=1,scaleSeq)
 }
