@@ -6,8 +6,8 @@ using namespace arma;
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-NumericVector computeAF(const mat& D, const int& homDim) {
-// Algebraic Functions
+NumericVector computeAlgebraicFunctions(const mat& D, const int& homDim) {
+
   uvec indices = find(D.col(0) == homDim); // Get indices of rows where D.col(0) == homDim
 
   // If there are no matching rows, stop

@@ -47,8 +47,7 @@ vec computeBetti(const mat& D, const int& homDim, const vec& scaleSeq, string ev
 }
 
 // [[Rcpp::export]]
-NumericVector computeECC(const mat& D, const vec& scaleSeq, const int& maxhomDim = -1, const string& evaluate = "intervals") {
-// ECC = Euler Characteristic Curve
+NumericVector computeEulerCharacteristic(const mat& D, const vec& scaleSeq, const int& maxhomDim = -1, const string& evaluate = "intervals") {
 
   int effectiveMaxHomDim;
 

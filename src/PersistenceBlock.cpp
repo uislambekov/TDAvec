@@ -6,10 +6,9 @@ using namespace arma;
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-NumericVector computeVPB(const mat& D, const int& homDim,
+NumericVector computePersistenceBlock(const mat& D, const int& homDim,
                      const vec& xSeq, const vec& ySeq,
                      const double& tau = 0.3) {
-// Vectorized Persistence Block
 
   // Filter rows matching the given dimension
   uvec indices = find(D.col(0) == homDim);

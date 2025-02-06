@@ -20,8 +20,7 @@ double tent_function_1D(const vec& y, const double& b, const double& delta) {
 }
 
 // [[Rcpp::export]]
-NumericVector computeTF(const mat& D, const int& homDim, const double& delta, const int& d, const double& epsilon) {
-  // Template Function (TF)
+NumericVector computeTemplateFunction(const mat& D, const int& homDim, const double& delta, const int& d, const double& epsilon) {
   // delta = increment
   // d = number of bins in each axis
   // epsilon = vertical shift up

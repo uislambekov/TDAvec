@@ -6,9 +6,9 @@ using namespace Rcpp;
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-NumericVector computePS(const mat& D, const int& homDim, const vec& scaleSeq,
+NumericVector computePersistenceSilhouette(const mat& D, const int& homDim, const vec& scaleSeq,
                         const double& p=1.0, const std::string& evaluate = "intervals") {
-// Persistence Silhouette
+
   uvec indices = find(D.col(0) == homDim); // Get indices of rows where D.col(0) == homDim
 
   // If there are no matching rows, return a zero vector with length scaleSeq.size() - 1

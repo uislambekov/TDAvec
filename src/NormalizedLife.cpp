@@ -7,8 +7,7 @@ using namespace Rcpp;
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-NumericVector computeNL(const arma::mat& D, const int& homDim, const arma::vec& scaleSeq, std::string evaluate = "intervals") {
-// NL = Normalized Life
+NumericVector computeNormalizedLife(const arma::mat& D, const int& homDim, const arma::vec& scaleSeq, std::string evaluate = "intervals") {
 
   // Get indices of rows where D.col(0) == homDim
   uvec indices = find(D.col(0) == homDim);

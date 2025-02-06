@@ -32,19 +32,21 @@ A (named) numeric vector containing:
 
 \examples{
 set.seed(123)
-N <- 100 # size of point clouds
-nD <- 50 # number of persistence diagrams
+N <- 100 # The size of point clouds
+nD <- 50 # The number of persistence diagrams
 Dlist <- list()
 for (i in 1:nD){
-  # sample N points uniformly from unit circle and add Gaussian noise
-  X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
-  # compute a persistence diagram using the Rips filtration built on top of X
-  Dlist[[i]] <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram
+  # sample N points uniformly from the unit circle and add Gaussian noise
+  theta <- runif(N, min = 0, max = 2 * pi)
+
+  # Compute the persistence diagram using the Rips filtration built on top of X
+  # The 'threshold' parameter specifies the maximum distance for building simplices
+  Dlist[[i]] <- TDAstats::calculate_homology(X, threshold = 2)
 }
 
 # Compute the extreme values of birth, death, and persistence across all 50 diagrams for homological dimension H_0
-computeLimits(Dlist,homDim = 0)
+computeLimits(Dlist, homDim = 0)
 
 # Compute the extreme values of birth, death, and persistence across all 50 diagrams for homological dimension H_1
-computeLimits(Dlist,homDim = 1)
+computeLimits(Dlist, homDim = 1)
 }

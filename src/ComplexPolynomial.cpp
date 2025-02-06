@@ -27,8 +27,7 @@ cx_vec T(const vec& x, const vec& y) {
 }
 
 // [[Rcpp::export]]
-mat computeCP(const mat& D, const int& homDim, const int& m=1, string polyType = "R") {
-// Complex Polynomials
+mat computeComplexPolynomial(const mat& D, const int& homDim, const int& m=1, string polyType = "R") {
 
     // Get indices of rows where D.col(0) == homDim
   uvec indices = find(D.col(0) == homDim);

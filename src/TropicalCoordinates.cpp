@@ -8,8 +8,8 @@ using namespace std;
 
 
 // [[Rcpp::export]]
-NumericVector computeTC(const mat& D, const int& homDim, const int&r=1) {
-// Tropical Coordinates
+NumericVector computeTropicalCoordinates(const mat& D, const int& homDim, const int&r=1) {
+
   if (r <= 0) stop("r must be a positive integer!");
 
   uvec indices = find(D.col(0) == homDim); // Get indices of rows where D.col(0) == homDim

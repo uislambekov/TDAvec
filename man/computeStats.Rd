@@ -43,18 +43,21 @@ Umar Islambekov
 }
 
 \examples{
-N <- 100
-set.seed(123)
+N <- 100 # The number of points to sample
 
-# sample N points uniformly from unit circle and add Gaussian noise
-X <- TDA::circleUnif(N,r=1) + rnorm(2*N,mean = 0,sd = 0.2)
+set.seed(123) # Set a random seed for reproducibility
 
-# compute a persistence diagram using the Rips filtration built on top of X
-D <- TDA::ripsDiag(X,maxdimension = 1,maxscale = 2)$diagram
+# Sample N points uniformly from the unit circle and add Gaussian noise
+theta <- runif(N, min = 0, max = 2 * pi)
+X <- cbind(cos(theta), sin(theta)) + rnorm(2 * N, mean = 0, sd = 0.2)
+
+# Compute the persistence diagram using the Rips filtration built on top of X
+# The 'threshold' parameter specifies the maximum distance for building simplices
+D <- TDAstats::calculate_homology(X, threshold = 2)
 
 # Compute statistics for homological dimension H_0
-computeStats(D,homDim=0)
+computeStats(D, homDim = 0)
 
 # Compute statistics for homological dimension H_1
-computeStats(D,homDim=1)
+computeStats(D, homDim = 1)
 }

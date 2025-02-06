@@ -7,10 +7,10 @@ using namespace std;
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-mat computePL(const mat& D, const int& homDim, const vec& scaleSeq, const int& k=1,
+mat computePersistenceLandscape(const mat& D, const int& homDim, const vec& scaleSeq, const int& k=1,
               const bool& generalized=false, const string& kernel = "triangle",
               Nullable<double> h = R_NilValue) {
-// Persistence Landscape
+
   uvec indices = find(D.col(0) == homDim); // Get indices of rows where D.col(0) == homDim
 
   mat pl(k,scaleSeq.n_elem);

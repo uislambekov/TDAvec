@@ -8,8 +8,7 @@ using namespace std;
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-NumericVector computePES(const mat& D, const int& homDim, const vec& scaleSeq, string evaluate = "intervals") {
-// PES = Persistence Entropy Summary
+NumericVector computePersistentEntropy(const mat& D, const int& homDim, const vec& scaleSeq, string evaluate = "intervals") {
 
   // Get indices of rows where D.col(0) == homDim
   uvec indices = find(D.col(0) == homDim);
