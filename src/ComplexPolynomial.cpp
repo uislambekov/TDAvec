@@ -32,8 +32,8 @@ mat computeComplexPolynomial(const mat& D, const int& homDim, const int& m=1, st
     // Get indices of rows where D.col(0) == homDim
   uvec indices = find(D.col(0) == homDim);
 
-  // If there are no matching rows, stop
-  if (indices.n_elem == 0) stop("The diagram has no points corresponding to homological dimension " + std::to_string(homDim));
+  // If there are no matching rows, return m by 2 matrix of zeros
+  if (indices.n_elem == 0) return mat(m, 2, fill::zeros);
   // Extract rows with the specified homDim
   vec x = D.submat(indices, uvec{1});      // Select column 1 elements for matching rows
   vec y = D.submat(indices, uvec{2});      // Select column 2 elements for matching rows
@@ -43,8 +43,8 @@ mat computeComplexPolynomial(const mat& D, const int& homDim, const int& m=1, st
   x = x.elem(finiteIdx);
   y = y.elem(finiteIdx);
 
-  // If x has length zero, stop
-  if (x.n_elem == 0) stop("The diagram has no points with finite death value corresponding to homological dimension " + std::to_string(homDim));
+  // If x has length zero, return m by 2 matrix of zeros
+  if (x.n_elem == 0) return mat(m, 2, fill::zeros);
 
   // Stop if the number of persistence points is less than m
   if (x.n_elem < m) stop("m must be less than or equal to the number of points in the diagram!");

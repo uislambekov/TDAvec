@@ -24,6 +24,10 @@ computePersistenceBlock(D, homDim, xSeq, ySeq, tau=0.3)
 \item{tau}{a parameter (between 0 and 1) controlling block sizes. Default is \code{tau=0.3}.}
 }
 
+\details{
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data, \code{xSeq} and \code{ySeq}. If \code{D} does not contain any points corresponding to \code{homDim}, a vector of zeros is returned.
+}
+
 \value{
 A numeric vector whose elements are the weighted averages of the persistence block computed over each cell of the two-dimensional grid constructred from \code{xSeq}=\eqn{\{x_1,x_2,\ldots,x_n\}} and \code{ySeq}=\eqn{\{y_1,y_2,\ldots,y_m\}}:
 
