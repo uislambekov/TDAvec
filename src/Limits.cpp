@@ -3,7 +3,7 @@ using namespace Rcpp;
 using namespace arma;
 
 // [[Rcpp::depends(RcppArmadillo)]]
-NumericVector findMinMax(const mat& pd, const int& homDim) {
+vec findMinMax(const mat& pd, const int& homDim) {
   // Filter rows of dimension homDim
   uvec indices = find(pd.col(0) == homDim); // Get indices of rows where pd.col(0) == homDim
 
@@ -18,9 +18,10 @@ NumericVector findMinMax(const mat& pd, const int& homDim) {
     y = y.elem(finiteIdx); // death
     vec p = y-x; // persistence
 
-    return NumericVector::create(min(x),max(x),max(y),min(p),max(p));
+    return vec({arma::min(x), arma::max(x), arma::max(y), arma::min(p), arma::max(p)});
   } else {
-    return NumericVector::create(NA_REAL, NA_REAL, NA_REAL, NA_REAL, NA_REAL);
+    // Return a vector of NAs if no valid rows are found
+    return vec(5, fill::value(arma::datum::nan));
   }
 }
 
@@ -28,10 +29,10 @@ NumericVector findMinMax(const mat& pd, const int& homDim) {
 NumericVector computeLimits(const field<mat>& Dlist, const int& homDim) {
 // Compute extreme values of birth, death and persistence
     int n = Dlist.n_elem;
-  NumericVector minB(n), maxB(n), maxD(n), minP(n), maxP(n);
+  vec minB(n), maxB(n), maxD(n), minP(n), maxP(n);
 
   for (int k = 0; k < n; ++k) {
-    NumericVector ans = findMinMax(Dlist(k), homDim);
+    vec ans = findMinMax(Dlist(k), homDim);
     minB[k] = ans[0];
     maxB[k] = ans[1];
     maxD[k] = ans[2];
@@ -39,11 +40,16 @@ NumericVector computeLimits(const field<mat>& Dlist, const int& homDim) {
     maxP[k] = ans[4];
   }
 
-  return NumericVector::create(
-    Named("minB") = min(minB),
-    Named("maxB") = max(maxB),
-    Named("maxD") = max(maxD),
-    Named("minP") = min(minP),
-    Named("maxP") = max(maxP)
-  );
+  uvec finiteIdx = find_finite(minB);
+
+  if (finiteIdx.n_elem==0)
+    stop("The diagrams do not contain points corresponding to homological dimension " + std::to_string(homDim));
+  else
+    return NumericVector::create(
+      Named("minB") = min(minB.elem(finiteIdx)),
+      Named("maxB") = max(maxB.elem(finiteIdx)),
+      Named("maxD") = max(maxD.elem(finiteIdx)),
+      Named("minP") = min(minP.elem(finiteIdx)),
+      Named("maxP") = max(maxP.elem(finiteIdx))
+    );
 }
