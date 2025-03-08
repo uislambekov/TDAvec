@@ -27,51 +27,8 @@ NumericVector computeStats(const mat& D, const int& homDim) {
 
   uvec indices = find(D.col(0) == homDim); // Get indices of rows where D.col(0) == homDim
 
-  // If there are no matching rows, return a vector of zeros
-  if (indices.n_elem == 0) return NumericVector::create(
-    Named("mean_births") = 0.0,
-    Named("stddev_births") = 0.0,
-    Named("median_births") = 0.0,
-    Named("iqr_births") = 0.0,
-    Named("range_births") = 0.0,
-    Named("p10_births") = 0.0,
-    Named("p25_births") = 0.0,
-    Named("p75_births") = 0.0,
-    Named("p90_births") = 0.0,
-
-    Named("mean_deaths") = 0.0,
-    Named("stddev_deaths") = 0.0,
-    Named("median_deaths") = 0.0,
-    Named("iqr_deaths") = 0.0,
-    Named("range_deaths") = 0.0,
-    Named("p10_deaths") = 0.0,
-    Named("p25_deaths") = 0.0,
-    Named("p75_deaths") = 0.0,
-    Named("p90_deaths") = 0.0,
-
-    Named("mean_midpoints") = 0.0,
-    Named("stddev_midpoints") = 0.0,
-    Named("median_midpoints") = 0.0,
-    Named("iqr_midpoints") = 0.0,
-    Named("range_midpoints") = 0.0,
-    Named("p10_midpoints") = 0.0,
-    Named("p25_midpoints") = 0.0,
-    Named("p75_midpoints") = 0.0,
-    Named("p90_midpoints") = 0.0,
-
-    Named("mean_lifespans") = 0.0,
-    Named("stddev_lifespans") = 0.0,
-    Named("median_lifespans") = 0.0,
-    Named("iqr_lifespans") = 0.0,
-    Named("range_lifespans") = 0.0,
-    Named("p10_lifespans") = 0.0,
-    Named("p25_lifespans") = 0.0,
-    Named("p75_lifespans") = 0.0,
-    Named("p90_lifespans") = 0.0,
-
-    Named("total_bars") = 0,
-    Named("entropy") = 0.0
-  );
+  // If there are no matching rows, stop
+  if (indices.n_elem == 0) stop("The diagram has no points corresponding to homological dimension " + std::to_string(homDim));
 
   // Extract rows with the specified homDim
   vec x = D.submat(indices, uvec{1});      // Select column 1 elements for matching rows
@@ -85,51 +42,8 @@ NumericVector computeStats(const mat& D, const int& homDim) {
   x = x.elem(finiteIdx);
   y = y.elem(finiteIdx);
 
-  // If x has length zero, return a vector of zeros
-  if (x.n_elem == 0) return NumericVector::create(
-    Named("mean_births") = 0.0,
-    Named("stddev_births") = 0.0,
-    Named("median_births") = 0.0,
-    Named("iqr_births") = 0.0,
-    Named("range_births") = 0.0,
-    Named("p10_births") = 0.0,
-    Named("p25_births") = 0.0,
-    Named("p75_births") = 0.0,
-    Named("p90_births") = 0.0,
-
-    Named("mean_deaths") = 0.0,
-    Named("stddev_deaths") = 0.0,
-    Named("median_deaths") = 0.0,
-    Named("iqr_deaths") = 0.0,
-    Named("range_deaths") = 0.0,
-    Named("p10_deaths") = 0.0,
-    Named("p25_deaths") = 0.0,
-    Named("p75_deaths") = 0.0,
-    Named("p90_deaths") = 0.0,
-
-    Named("mean_midpoints") = 0.0,
-    Named("stddev_midpoints") = 0.0,
-    Named("median_midpoints") = 0.0,
-    Named("iqr_midpoints") = 0.0,
-    Named("range_midpoints") = 0.0,
-    Named("p10_midpoints") = 0.0,
-    Named("p25_midpoints") = 0.0,
-    Named("p75_midpoints") = 0.0,
-    Named("p90_midpoints") = 0.0,
-
-    Named("mean_lifespans") = 0.0,
-    Named("stddev_lifespans") = 0.0,
-    Named("median_lifespans") = 0.0,
-    Named("iqr_lifespans") = 0.0,
-    Named("range_lifespans") = 0.0,
-    Named("p10_lifespans") = 0.0,
-    Named("p25_lifespans") = 0.0,
-    Named("p75_lifespans") = 0.0,
-    Named("p90_lifespans") = 0.0,
-
-    Named("total_bars") = 0,
-    Named("entropy") = 0.0
-  );
+  // If x has length zero, stop
+  if (x.n_elem == 0) stop("The diagram has no points with finite death value corresponding to homological dimension " + std::to_string(homDim));
 
   // Compute statistics for births, deaths, midpoints, and lifespans
   vec stats_births = calcStats(x);

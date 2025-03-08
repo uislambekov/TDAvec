@@ -46,7 +46,7 @@ computePersistenceLandscape(D, homDim, scaleSeq, k = 1, generalized = FALSE, ker
 }
 
 \details{
-The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{scaleSeq}. If \code{D} does not contain any points corresponding to \code{homDim}, a vector of zeros is returned. If \code{generalized = TRUE}, three different kernel functions are currently supported:
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{scaleSeq}. If  \code{generalized = TRUE}, three different kernel functions are currently supported:
   \itemize{
     \item Triangle kernel: \eqn{K_h(t) = \frac{1}{h} \max(0, 1 - \frac{|t|}{h})}
     \item Epanechnikov kernel: \eqn{K_h(t) = \frac{3}{4h} \max(0, 1 - \frac{t^2}{h^2})}

@@ -24,7 +24,7 @@ computeEulerCharacteristic(D, scaleSeq, maxhomDim = -1, evaluate = "intervals")
 }
 
 \value{
-A numeric vector containing elements computed using \code{scaleSeq}=\eqn{\{t_1,t_2,\ldots,t_n\}} according to the method specified by \code{evaluate}. If \code{D} does not contain any points corresponding to \code{homDim}, a vector of zeros is returned.
+A numeric vector containing elements computed using \code{scaleSeq}=\eqn{\{t_1,t_2,\ldots,t_n\}} according to the method specified by \code{evaluate}.
 
 \itemize{
   \item \code{"intervals"}: Computes average values of the Euler characteristic curve over intervals defined by consecutive elements in \code{scaleSeq}:

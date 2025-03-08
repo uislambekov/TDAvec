@@ -14,15 +14,8 @@ NumericVector computeTropicalCoordinates(const mat& D, const int& homDim, const 
 
   uvec indices = find(D.col(0) == homDim); // Get indices of rows where D.col(0) == homDim
 
-  // If there are no matching rows, return a vector of zeros
-  if (indices.n_elem == 0) return NumericVector::create(
-    Named("F1") = 0,
-    Named("F2") = 0,
-    Named("F3") = 0,
-    Named("F4") = 0,
-    Named("F5") = 0,
-    Named("F6") = 0,
-    Named("F7") = 0);
+  // If there are no matching rows, stop
+  if (indices.n_elem == 0) stop("The diagram has no points corresponding to homological dimension " + std::to_string(homDim));
 
   // Extract rows with the specified homDim
   vec x = D.submat(indices, uvec{1});      // Select column 1 elements for matching rows
@@ -33,15 +26,8 @@ NumericVector computeTropicalCoordinates(const mat& D, const int& homDim, const 
   x = x.elem(finiteIdx);
   y = y.elem(finiteIdx);
 
-  // If x has length zero, return a vector of zeros
-  if (finiteIdx.n_elem == 0) return NumericVector::create(
-    Named("F1") = 0,
-    Named("F2") = 0,
-    Named("F3") = 0,
-    Named("F4") = 0,
-    Named("F5") = 0,
-    Named("F6") = 0,
-    Named("F7") = 0);
+  // If x has length zero, stop
+  if (finiteIdx.n_elem == 0) stop("The diagram has no points with finite death value corresponding to homological dimension " + std::to_string(homDim));
 
   vec lambda = y - x; //unsorted lifespans
   vec l = sort(y - x,"descend"); // sorted lifespans

@@ -18,7 +18,7 @@ computeStats(D, homDim)
 }
 
 \details{
-The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes the mean, standard deviation, median, IQR (interquartile range), range, 10th, 25th, 75th and 90th percentiles of the birth, death, midpoint, lifespan (or persistence) values; the total number of bars (or points in the diagram) and the entropy of the lifespan values (-\eqn{\sum_{i=1}^N\frac{l_i}{L}\log_2(\frac{l_i}{L})}, where \eqn{l_i=d_i-b_i} (lifespan) and \eqn{L=\sum_{i=1}^N l_i}). If \code{D} does not contain any points corresponding to \code{homDim}, a vector of zeros is returned.
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes the mean, standard deviation, median, IQR (interquartile range), range, 10th, 25th, 75th and 90th percentiles of the birth, death, midpoint, lifespan (or persistence) values; the total number of bars (or points in the diagram) and the entropy of the lifespan values (-\eqn{\sum_{i=1}^N\frac{l_i}{L}\log_2(\frac{l_i}{L})}, where \eqn{l_i=d_i-b_i} (lifespan) and \eqn{L=\sum_{i=1}^N l_i}).
 }
 
 

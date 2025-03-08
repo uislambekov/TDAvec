@@ -38,7 +38,6 @@ Dlist <- list()
 for (i in 1:nD){
   # sample N points uniformly from the unit circle and add Gaussian noise
   theta <- runif(N, min = 0, max = 2 * pi)
-  X <- cbind(cos(theta), sin(theta)) + rnorm(2 * N, mean = 0, sd = 0.2)
 
   # Compute the persistence diagram using the Rips filtration built on top of X
   # The 'threshold' parameter specifies the maximum distance for building simplices

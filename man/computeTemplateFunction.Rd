@@ -28,7 +28,7 @@ computeTemplateFunction(D, homDim, delta, d, epsilon)
 }
 
 \details{
-The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes the tent template function on a discretized grid determined by \code{delta}, \code{d}, and \code{epsilon}. The number of tent functions is controlled by \code{d}. The value of \eqn{\delta} is chosen such that the box \eqn{[0, \delta d] \times [\epsilon,\delta d + \epsilon]} contains all the points of the diagrams considered in the birth-persistence plane. \eqn{\epsilon} should be smaller than the minimum persistence value across all the diagrams under consideration. If \code{D} does not contain any points corresponding to \code{homDim}, a vector of zeros is returned.
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes the tent template function on a discretized grid determined by \code{delta}, \code{d}, and \code{epsilon}. The number of tent functions is controlled by \code{d}. The value of \eqn{\delta} is chosen such that the box \eqn{[0, \delta d] \times [\epsilon,\delta d + \epsilon]} contains all the points of the diagrams considered in the birth-persistence plane. \eqn{\epsilon} should be smaller than the minimum persistence value across all the diagrams under consideration.
 
 If \code{homDim=0} and all the birth values are equal (e.g., zero), one-dimensional tent template functions are used instead for vectorization:
 

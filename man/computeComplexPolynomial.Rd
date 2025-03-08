@@ -36,7 +36,7 @@ computeComplexPolynomial(D, homDim, m = 1, polyType = "R")
 }
 
 \details{
-The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{polyType}. If \code{D} does not contain any points corresponding to \code{homDim}, a matrix of zeros is returned.
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{polyType}.
 }
 
 \value{
