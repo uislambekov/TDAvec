@@ -24,9 +24,9 @@ computeBettiCurve(D, homDim, scaleSeq, evaluate = "intervals")
 }
 
 \details{
-The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{scaleSeq}.
-
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{scaleSeq}. If \code{D} does not contain any points corresponding to \code{homDim}, a vector of zeros is returned.
 }
+
 \value{
 A numeric vector containing elements computed using \code{scaleSeq}=\eqn{\{t_1,t_2,\ldots,t_n\}} according to the method specified by \code{evaluate}.
 

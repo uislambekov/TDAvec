@@ -36,7 +36,7 @@ computePersistenceSilhouette(D, homDim, scaleSeq, p = 1.0, evaluate = "intervals
 }
 
 \details{
-The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{scaleSeq}.
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{scaleSeq}. If \code{D} does not contain any points corresponding to \code{homDim}, a vector of zeros is returned.
 
 }
 \value{

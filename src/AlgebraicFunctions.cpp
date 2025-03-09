@@ -10,8 +10,13 @@ NumericVector computeAlgebraicFunctions(const mat& D, const int& homDim) {
 
   uvec indices = find(D.col(0) == homDim); // Get indices of rows where D.col(0) == homDim
 
-  // If there are no matching rows, stop
-  if (indices.n_elem == 0) stop("The diagram has no points corresponding to homological dimension " + std::to_string(homDim));
+  // If there are no matching rows, return zeros
+  if (indices.n_elem == 0) return NumericVector::create(
+    Named("f1") = 0,
+    Named("f2") = 0,
+    Named("f3") = 0,
+    Named("f4") = 0);
+
   // Extract rows with the specified homDim
   vec x = D.submat(indices, uvec{1});      // Select column 1 elements for matching rows
   vec y = D.submat(indices, uvec{2});      // Select column 2 elements for matching rows
@@ -21,8 +26,12 @@ NumericVector computeAlgebraicFunctions(const mat& D, const int& homDim) {
   x = x.elem(finiteIdx);
   y = y.elem(finiteIdx);
 
-  // If x has length zero, stop
-  if (x.n_elem == 0) stop("The diagram has no points with finite death value corresponding to homological dimension " + std::to_string(homDim));
+  // If x has length zero, return zeros
+  if (x.n_elem == 0) return NumericVector::create(
+    Named("f1") = 0,
+    Named("f2") = 0,
+    Named("f3") = 0,
+    Named("f4") = 0);
 
   double yMax = max(y);
   vec l = y - x;

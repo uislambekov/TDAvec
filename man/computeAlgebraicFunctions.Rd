@@ -26,7 +26,7 @@ computeAlgebraicFunctions(D, homDim)
 }
 
 \details{
-The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes the four algebraic functions based on the filtered data.
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes the four algebraic functions based on the filtered data. If \code{D} does not contain any points corresponding to \code{homDim}, a vector of zeros is returned.
 }
 
 

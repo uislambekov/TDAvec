@@ -36,7 +36,7 @@ computePersistenceLandscape(D, homDim, scaleSeq, k = 1, generalized = FALSE, ker
 
 \item{scaleSeq}{a numeric vector of increasing scale values used for vectorization.}
 
-  \item{k}{an integer specifying the number of persistence landscape functions to consider (default is 1).  Must be less than or equal to the number of points in the diagram.}
+  \item{k}{an integer specifying the number of persistence landscape functions to consider (default is 1).}
 
   \item{generalized}{a logical value indicating whether to use a generalized persistence landscape or not. Default is FALSE.}
 
@@ -46,7 +46,7 @@ computePersistenceLandscape(D, homDim, scaleSeq, k = 1, generalized = FALSE, ker
 }
 
 \details{
-The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{scaleSeq}. If  \code{generalized = TRUE}, three different kernel functions are currently supported:
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes values based on the filtered data and \code{scaleSeq}. If \code{D} does not contain any points corresponding to \code{homDim}, a vector of zeros is returned. If \code{generalized = TRUE}, three different kernel functions are currently supported:
   \itemize{
     \item Triangle kernel: \eqn{K_h(t) = \frac{1}{h} \max(0, 1 - \frac{|t|}{h})}
     \item Epanechnikov kernel: \eqn{K_h(t) = \frac{3}{4h} \max(0, 1 - \frac{t^2}{h^2})}

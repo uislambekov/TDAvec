@@ -30,7 +30,7 @@ computeTropicalCoordinates(D, homDim, r = 1)
 }
 
 \details{
-The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes the seven tropical coordinates based on the filtered data.
+The function extracts rows from \code{D} where the first column equals \code{homDim}, and computes the seven tropical coordinates based on the filtered data. If \code{D} does not contain any points corresponding to \code{homDim}, a vector of zeros is returned.
 }
 
 \value{

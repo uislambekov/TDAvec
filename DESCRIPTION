@@ -2,10 +2,10 @@ Package: TDAvec
 Type: Package
 Title: Vector summaries of persistence diagrams
 Version: 0.1.3
-Author: Umar Islambekov
+Author: Umar Islambekov, Aleksei Luchinsky
 Maintainer: Umar Islambekov <uislambekov@gmail.com>
 Description: Provides tools for computing various vector summaries of persistence diagrams studied in Topological Data Analysis. For improved computational efficiency, 
-    all code for the vector summaries is written in 'C++' using the 'Rcpp' package.
+    all code for the vector summaries is written in 'C++' using the 'Rcpp' and 'RcppArmadillo' packages
 License: MIT License
 Encoding: UTF-8
 Imports:
