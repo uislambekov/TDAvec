@@ -73,6 +73,6 @@ where $\Delta t_i = t_{i+1} - t_i$. Unlike the method in (\ref{stand_vec}), this
 
 3. To achieve higher computational efficiency, all code behind the vector summaries of \texttt{TDAvec} is written in C++ using the `Rcpp` and `RcppArmadillo` packages. 
 
-The \texttt{TDAvec} \texttt{R} package and a vignette showing its basic usage with examples are available on the CRAN repository\footnote{https://cran.r-project.org/web/packages/TDAvec/index.html}. For \texttt{Python} examples, we refer the readers to https://github.com/ALuchinsky/tdavec/.
+The \texttt{TDAvec} \texttt{R} package and a vignette showing its basic usage with examples are available on the CRAN repository\footnote{https://cran.r-project.org/web/packages/TDAvec/index.html}. For \texttt{Python} examples, we refer the readers to [this page](https://github.com/ALuchinsky/tdavec/).
 
 # References
