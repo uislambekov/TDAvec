@@ -5,6 +5,7 @@ from  .tdavec_core import pmin, pmax, DiagToPD, \
     computePersistenceBlock, computePersistenceLandscape, computePersistenceSilhouette, computeNormalizedLife, computeBettiCurve, computeEulerCharacteristic, computePersistentEntropy, computePersistenceImage,\
     computePersistenceBlock_dim0, computePersistenceBlock_dim1, computeFDA, computeAlgebraicFunctions, computeStats, \
     computeComplexPolynomial, computeTemplateFunction, computeTropicalCoordinates
+
 def pmax(num, vec):
     """
     Compute the element-wise maximum of a scalar value and a NumPy array.
@@ -156,13 +157,19 @@ class TDAvectorizer:
             return out
     
 
-clouds = []
-ratList = np.random.uniform(-0.5, 0.5, 10**3)
-for ratio in ratList:
-    clouds = clouds + [createEllipse(a=1-ratio, b=1, eps=0.1)]
+def test_package():
+    clouds = []
+    ratList = np.random.uniform(-0.5, 0.5, 10)
+    print("Creating point cloud...")
+    for ratio in ratList:
+        clouds = clouds + [createEllipse(a=1-ratio, b=1, eps=0.1)]
 
-vect = TDAvectorizer()
-vect.fit(clouds)
+    vect = TDAvectorizer()
+    print("Creating PD...")
+    vect.fit(clouds)
+    print("Creating vetorization...")
+    ps = vect.transform(output="PS", homDim=1)
+    return clouds[0], vect.diags[0], ps[0]
 
 
     

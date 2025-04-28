@@ -1,0 +1,4 @@
+include tdavec/*.pyx
+include tdavec/*.pxd
+include tdavec/*.c
+
