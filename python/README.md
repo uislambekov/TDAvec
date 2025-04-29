@@ -34,7 +34,7 @@ into your environment.
 
 You can also install the current verion from the GitHub with
 
-    pip install git+https://github.com/ALuchinsky/tdavect
+    pip install -e "git+https://github.com/uislambekov/TDAvec.git#egg=tdavec&subdirectory=python"
 
 Alternatively, you can install it from the source. In order to do this clone mentioned above github repository and run the followin commants from the project root directory:
 
@@ -83,7 +83,7 @@ Here are some examples:
         plt.grid()
     plt.tight_layout()
 
-![Point clouds](readme_figs/coluds.png)
+![Point clouds](https://raw.githubusercontent.com/uislambekov/TDAvec/main/python/readme_figs/clouds.png)
 
 In order to generate Persistence Diagrams one need to create TDAvectorizer object and fit fit it:
 
@@ -103,7 +103,7 @@ Here are the examples of the generated persistence diagrams:
             plt.title(f"eps={np.round(epsList[i], 2)}")
     plt.tight_layout()
 
-![PDs](./readme_figs/PDs.png)
+![PDs](https://raw.githubusercontent.com/uislambekov/TDAvec/main/python/readme_figs/PDs.png)
 
 Once TDAvectorizer object is fitted, one can calculate vectorization by calling `transorm()` method of this object:
 
@@ -114,7 +114,7 @@ Once TDAvectorizer object is fitted, one can calculate vectorization by calling 
     plt.legend()
     plt.show()
 
-![Vectorizations](./readme_figs/Vects.png)
+![Vectorizations](https://raw.githubusercontent.com/uislambekov/TDAvec/main/python/readme_figs/Vects.png)
 
 These vectorizations can be used as predictors for ML problem, whose goal is to predict the original deformation parameter. We will use a simple `sklearn.LinearRegression` model to solve the problem
 

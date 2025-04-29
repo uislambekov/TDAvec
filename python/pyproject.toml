@@ -10,7 +10,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tdavec"
-version = "0.1.42"
+version = "0.1.43"
 dependencies = [
     "numpy==1.26.4",
     "ripser==0.6.8"
