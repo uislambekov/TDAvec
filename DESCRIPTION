@@ -9,7 +9,8 @@ Description: Provides tools for computing various vector summaries of persistenc
 License: MIT License
 Encoding: UTF-8
 Imports:
-  Rcpp (>= 1.0.5)
+  Rcpp (>= 1.0.5),
+  TDAstats
 LinkingTo: Rcpp, RcppArmadillo
 VignetteBuilder: knitr
 URL: https://github.com/uislambekov/TDAvec
