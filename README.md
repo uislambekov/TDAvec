@@ -27,3 +27,8 @@ devtools::install_github("uislambekov/TDAvec", build_vignettes = TRUE)
 ### Vignette
 `TDAvec` includes a vignette that provides examples to demonstrate its basic usage.
 
+## Support and Contributions
+
+If you have questions, find bugs, or want to suggest features, please visit the [GitHub Issues page](https://github.com/uislambekov/TDAvec/issues) to report them or start a discussion.
+
+
