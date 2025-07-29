@@ -57,13 +57,13 @@ The problem of transforming PDs into finite dimensional vectors for machine lear
 
 2. A univariate summary function $f$ of a PD is commonly vectorized by evaluating it at a sequence of points on a one-dimensional grid, then organizing the resulting values into a vector:
 \begin{equation}\label{stand_vec} (f(t_1),f(t_2),\ldots,f(t_n))\in\mathbb{R}^n, \end{equation}
-where $t_1, t_2, \ldots, t_n$ form an increasing sequence of scale values. For instance, the \texttt{landscape()} and \texttt{silhouette()} functions in the \texttt{TDA} package produce such vector summaries for persistence landscapes and silhouettes, respectively.
+where $t_1, t_2, \ldots, t_n$ form an increasing sequence of scale values. For instance, the \texttt{landscape()} and \texttt{silhouette()} functions in the \texttt{TDA} [@TDA] package produce such vector summaries for persistence landscapes and silhouettes, respectively.
 In addition to this standard approach, the \texttt{TDAvec} package introduces an alternative vectorization scheme that captures the average behavior of $f$ between consecutive scale values $t_i$ and $t_{i+1}$ through integration:
 \begin{equation} \Big(\frac{1}{\Delta t_1}\int_{t_1}^{t_2}f(t),dt,\frac{1}{\Delta t_2}\int_{t_2}^{t_3}f(t),dt,\ldots,\frac{1}{\Delta t_{n-1}}\int_{t_{n-1}}^{t_n}f(t),dt\Big)\in\mathbb{R}^{n-1}, \end{equation}
 where $\Delta t_i = t_{i+1} - t_i$. Unlike the method in (\ref{stand_vec}), this approach retains information about the behavior of $f$ between neighboring scale points. It is applicable to any univariate summary function that is integrable in closed form, such as the persistence silhouette, persistent entropy summary function, Euler characteristic curve, normalized life curve, and Betti function. Users have the flexibility to choose between the two vectorization methods based on their application needs.
 
-3. To achieve higher computational efficiency, all code behind the vector summaries of \texttt{TDAvec} is written in C++ using the `Rcpp` and `RcppArmadillo` packages. 
+3. To achieve higher computational efficiency, all code behind the vector summaries of \texttt{TDAvec} is written in C++ using the `Rcpp` [@Rcpp] and `RcppArmadillo` [@RcppArmadillo] packages. 
 
-The \texttt{TDAvec} \texttt{R} package and a vignette showing its basic usage with examples are available on the CRAN repository\footnote{https://cran.r-project.org/web/packages/TDAvec/index.html}. For \texttt{Python} examples, we refer the readers to [this page](https://github.com/ALuchinsky/tdavec/).
+The \texttt{TDAvec} \texttt{R} package, along with a vignette demonstrating basic usage and run-time comparisons with other packages, is available on the CRAN repository\footnote{https://cran.r-project.org/web/packages/TDAvec/index.html}. For \texttt{Python} examples, we refer the readers to [this page](https://github.com/ALuchinsky/tdavec/).
 
 # References
