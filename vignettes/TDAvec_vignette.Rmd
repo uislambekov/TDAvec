@@ -2,7 +2,7 @@
 title: "TDAvec vignette"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{TDAvec-vignette}
+  %\VignetteIndexEntry{TDAvec vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -43,7 +43,12 @@ Let's first load the required libraries.
 
 ```{r setup}
 library(TDAvec)
-library(TDAstats) # to compute persistence diagrams
+stats_pkg_flag <- requireNamespace("TDAstats", quietly = TRUE) # to compute persistence diagrams
+if (stats_pkg_flag) {
+library(TDAstats) # load it only if present
+} else {
+message("NOTE: TDAstats not installed; code chunks that rely on it will be shown but not run.")
+}
 ```
 
 Now, we generate a 2D point cloud of size 100 sampled uniformly from a unit circle with added Gaussian noise:
