@@ -174,13 +174,28 @@ def computePersistenceLandscape(D, homDim, scaleSeq, k=1):
         numpy.ndarray: The persistence landscape vector.
     """
     if D[homDim].shape[0] == 0:
-        return np.zeros( len(scaleSeq))
-    birth, death = D[homDim][:,0], D[homDim][:,1]
-    Lambda = [
-        np.sort(pmax(0, np.apply_along_axis(min, 0, np.array([s-birth, death-s]))))[-k]
-        for s in scaleSeq]
-    return np.array(Lambda)
+        return np.zeros(len(scaleSeq))
 
+    birth, death = D[homDim][:, 0], D[homDim][:, 1]
+
+    # Broadcast differences
+    s = scaleSeq[:, None]  # shape (m, 1)
+    left = s - birth       # distance to birth
+    right = death - s      # distance to death
+
+    # Triangular function height: min(left, right), but >= 0
+    height = np.minimum(left, right)
+    height = np.maximum(height, 0)
+
+    # Get k-th largest height per row
+    n = height.shape[1]
+    if k > n:
+        return np.zeros(len(scaleSeq))
+    idx = n - k  # index for kth largest
+    kth_vals = np.partition(height, idx, axis=1)[:, idx]
+
+    return kth_vals
+    
 # fast version of computePersistenceSilhouette
 def computePersistenceSilhouette(D, homDim, scaleSeq, p=1):
     """
@@ -263,7 +278,7 @@ def computeBettiCurve(D, homDim, scaleSeq):
     b = np.maximum(0, b)  # zero out negatives
 
     return np.sum(b, axis=1) / (scaleSeq[1:] - scaleSeq[:-1])
-    
+
 def computeEulerCharacteristic(D, maxhomDim, scaleSeq):
     """
     Compute the Euler Characteristic Curve (ECC) vectorization for a given homological dimension, maximum homological dimension, and scale sequence.
