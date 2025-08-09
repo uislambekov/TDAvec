@@ -167,11 +167,15 @@ The code for `computePersistenceImage()` is adopted from the `pers.image()` func
 
 Finally, we compare the computational costs of two vector-based vectorization methods—`persistence landscape` and `persistence silhouette`—across three `R` packages: `TDA`, `TDAkit`, and `TDAvec`. These are the only vector summaries consistently implemented in these three packages. For persistence diagrams with sizes ranging from 100 to 1000 points, we generate random birth and death values, construct the diagrams, and apply each method using the appropriate package functions. To assess performance, we use the `microbenchmark` package to record the median execution time (in milliseconds) for each method, averaged over 10 repetitions.
 
+
 ```{r message=FALSE, warning=FALSE}
 library(TDA)
+options(rgl.useNULL=TRUE)
 library(TDAkit)
 library(microbenchmark)
+```
 
+```{r message=FALSE, warning=FALSE}
 N <- seq(100,1000,by=100) # sequence of diagram sizes
 method <- c('landscape-TDA','landscape-TDAkit','landscape-TDAvec',
             'silhouette-TDA','silhouette-TDAkit','silhouette-TDAvec')
@@ -199,11 +203,9 @@ for (i in seq_along(N)){
   ))
   cost[i,] <- mb[['median']]
 }
-
-print(t(cost),digits = 2)
 ```
 
-Let us now download the results for python simulation, created using `./python/tdavec/time_tests.py` script
+Let us also download the results for python simulation, created using `./python/tdavec/time_tests.py` script
 
 ```{r}
 py_lines <- readLines("../python/tdavec/py_times.txt")

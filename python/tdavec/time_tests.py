@@ -27,7 +27,7 @@ for n in [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]:
     pd = np.array([b, d]).transpose()
     scaleSeq = np.linspace(0, 2, 101)
 
-    res = benchmark(myFunc, repeats = 10, pd = pd, scaleSeq = scaleSeq)
+    res = benchmark(myFunc, repeats = 50, pd = pd, scaleSeq = scaleSeq)
     print(f"{n}, {res['min']:.6f}, {res['max']:.6f}, {res['mean']:.6f}, {res['median']:.6f}, {res['stddev']:.6f}")
 
 
