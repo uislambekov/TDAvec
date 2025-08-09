@@ -207,12 +207,11 @@ for (i in seq_along(N)){
 
 Let us also download the results for python simulation, created using `./python/tdavec/time_tests.py` script
 
+
+
 ```{r}
-py_lines <- readLines("../python/tdavec/py_times.txt")
-py_cost <- rbind(
-  t(cost),
-  t(sapply(3:length(py_lines), function(i) 1000*as.numeric(strsplit(py_lines[i], ",")[[1]][4])))
-)
+py_data <- read.csv("../python/tdavec/benchmark_ps.csv")
+py_cost <- rbind(t(cost), 1e3*py_data$mean)
 rownames(py_cost)[nrow(py_cost)] <- "silhouette-python"
 print(py_cost, digits = 3)
 ```
