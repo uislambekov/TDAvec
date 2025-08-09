@@ -181,6 +181,7 @@ def computePersistenceLandscape(D, homDim, scaleSeq, k=1):
         for s in scaleSeq]
     return np.array(Lambda)
 
+# fast version of computePersistenceSilhouette
 def computePersistenceSilhouette(D, homDim, scaleSeq, p=1):
     """
     Compute the Persistence Silhouette vectorization for a given homological dimension, scale sequence, and power.
@@ -194,21 +195,29 @@ def computePersistenceSilhouette(D, homDim, scaleSeq, p=1):
     Returns:
         numpy.ndarray: The persistence spectrum vector.
     """
-    x, y = D[homDim][:,0], D[homDim][:,1]
-    pp = (y-x)**p
-    w = pp/np.sum(pp)
+    x = D[homDim][:, 0]
+    y = D[homDim][:, 1]
+    pp = (y - x) ** p
+    w = pp / np.sum(pp)
 
-    phi = []
-    for k in range(len(scaleSeq)-1):
-        alpha1 = pmax(scaleSeq[k], x)
-        alpha2 = pmax(scaleSeq[k], (x+y)/2)
-        beta1 = pmin(scaleSeq[k+1], (x+y)/2)
-        beta2 = pmin(scaleSeq[k+1], y)
-        b1 = pmax(0,beta1-alpha1)*((beta1+alpha1)/2-x)
-        b2 = pmax(0,beta2-alpha2)*(y-(beta2+alpha2)/2)
-        phi.append( np.sum(w*(b1+b2))/(scaleSeq[k+1]-scaleSeq[k]))
-    return np.array(phi)
+    mid = (x + y) / 2.0
+    n_intervals = len(scaleSeq) - 1
 
+    s0 = scaleSeq[:-1][:, None]  # shape (n_intervals, 1)
+    s1 = scaleSeq[1:][:, None]   # shape (n_intervals, 1)
+
+    alpha1 = np.maximum(s0, x)       # (n_intervals, n_points)
+    alpha2 = np.maximum(s0, mid)
+    beta1  = np.minimum(s1, mid)
+    beta2  = np.minimum(s1, y)
+
+    b1 = np.maximum(0.0, beta1 - alpha1) * ((beta1 + alpha1) / 2 - x)
+    b2 = np.maximum(0.0, beta2 - alpha2) * (y - (beta2 + alpha2) / 2)
+
+    phi = np.sum(w * (b1 + b2), axis=1) / (scaleSeq[1:] - scaleSeq[:-1])
+    return phi
+
+# fast version of computeNormalizedLife
 def computeNormalizedLife(D, homDim, scaleSeq):
     """
     Compute theNormalized Life Curve vectorization for a given homological dimension, scale sequence, and power.
@@ -221,13 +230,16 @@ def computeNormalizedLife(D, homDim, scaleSeq):
     Returns:
         numpy.ndarray: The nonlinear landscape vector.
     """
-    x, y = D[homDim][:,0], D[homDim][:,1]
-    lL = (y-x)/sum(y-x)
-    nl = []
-    for k in range(len(scaleSeq)-1):
-        b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
-        nl.append( np.sum(lL*pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
-    return np.array(nl)
+    x = D[homDim][:, 0]
+    y = D[homDim][:, 1]
+    lL = (y - x) / np.sum(y - x)
+
+    s0 = scaleSeq[:-1]
+    s1 = scaleSeq[1:]
+
+    b = np.minimum(s1[:, None], y) - np.maximum(s0[:, None], x)
+    nl = np.sum(lL * np.maximum(0, b), axis=1) / (s1 - s0)
+    return nl
 
 def computeBettiCurve(D, homDim, scaleSeq):
     """

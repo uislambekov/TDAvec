@@ -203,6 +203,20 @@ for (i in seq_along(N)){
 print(t(cost),digits = 2)
 ```
 
+Let us now download the results for python simulation, created using `./python/tdavec/time_tests.py` script
+
+```{r}
+py_lines <- readLines("../python/tdavec/py_times.txt")
+py_cost <- rbind(
+  t(cost),
+  t(sapply(3:length(py_lines), function(i) 1000*as.numeric(strsplit(py_lines[i], ",")[[1]][4])))
+)
+rownames(py_cost)[nrow(py_cost)] <- "silhouette-python"
+print(py_cost, digits = 3)
+```
+
+
+
 From the results, we observe significant differences in computational efficiency: `TDAvec` consistently outperforms both `TDAkit` and `TDA`, with its silhouette and landscape methods being substantially faster—e.g., for 1000 points, we compute silhouettes in ~`r round(cost[10,'silhouette-TDAvec'],digits=2)`ms using `TDAvec` versus ~`r round(cost[10,'silhouette-TDAkit'],digits=2)`ms with `TDAkit`, and landscapes in ~`r round(cost[10,'landscape-TDAvec'],digits=2)`ms versus ~`r round(cost[10,'landscape-TDAkit'],digits=2)`ms. 
 
 The following line plot illustrates how computation time scales with diagram size for the persistence silhouette method, highlighting performance differences between the three packages.
@@ -213,9 +227,10 @@ library(reshape2)
 
 silhouette_data <- data.frame(
   N = N,
-  `silhouette-TDA` = cost[,'silhouette-TDA'],
-  `silhouette-TDAkit` = cost[,'silhouette-TDAkit'],
-  `silhouette-TDAvec` = cost[,'silhouette-TDAvec'])
+  `silhouette-TDA` = py_cost['silhouette-TDA',],
+  `silhouette-TDAkit` = py_cost['silhouette-TDAkit',],
+  `silhouette-TDAvec` = py_cost['silhouette-TDAvec',],
+  `silhouette-python` = py_cost['silhouette-python',])
 
 # Reshape data
 silhouette_data_long <- melt(silhouette_data, id.vars = "N", 

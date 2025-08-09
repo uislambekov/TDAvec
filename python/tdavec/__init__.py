@@ -1,4 +1,4 @@
-print("Hello from tdavec")
+print("Hello from tdavec, faster TDA vectorization!")
 
 from .vectorizer import TDAvectorizer
 from .vectorizer import createEllipse, pmin, pmax, test_package
