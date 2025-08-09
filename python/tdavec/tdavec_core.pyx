@@ -195,7 +195,7 @@ def computePersistenceLandscape(D, homDim, scaleSeq, k=1):
     kth_vals = np.partition(height, idx, axis=1)[:, idx]
 
     return kth_vals
-    
+
 # fast version of computePersistenceSilhouette
 def computePersistenceSilhouette(D, homDim, scaleSeq, p=1):
     """
@@ -307,15 +307,28 @@ def computePersistentEntropy(D, homDim, scaleSeq):
     Returns:
         list: The PES values.
     """
-    x, y = D[homDim][:,0], D[homDim][:,1]
-    lL = (y-x)/np.sum(y-x)
-    entr = -lL*np.log10(lL)/np.log10(2)
-    pes = []
-    for k in range( len(scaleSeq)-1):
-        b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
-        pes.append( np.sum(entr*pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
-    return pes
+    if D[homDim].shape[0] == 0:
+        return np.zeros(len(scaleSeq) - 1)
 
+    x, y = D[homDim][:, 0], D[homDim][:, 1]
+
+    # Persistence length proportions
+    lengths = y - x
+    lL = lengths / np.sum(lengths)
+    entr = -lL * (np.log10(lL) / np.log10(2))
+
+    # Broadcast: each interval against all birth/death times
+    start = scaleSeq[:-1, None]
+    end = scaleSeq[1:, None]
+
+    b = np.minimum(end, y) - np.maximum(start, x)
+    b = np.maximum(b, 0)  # clamp negatives to 0
+
+    # Weighted sum and normalization in one vectorized step
+    pes = np.sum(entr * b, axis=1) / (end[:, 0] - start[:, 0])
+
+    return pes
+    
 from scipy.stats import norm
 def pnorm(x, mean, sd):
     """
