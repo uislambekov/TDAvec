@@ -253,13 +253,17 @@ def computeBettiCurve(D, homDim, scaleSeq):
     Returns:
         numpy.ndarray: The VAB vector.
     """
-    x, y = D[homDim][:,0], D[homDim][:,1]
-    vab = []
-    for k in range( len(scaleSeq)-1):
-        b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
-        vab.append( sum(pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
-    return np.array(vab)
+    x, y = D[homDim][:, 0], D[homDim][:, 1]
 
+    # Broadcast x, y over scale intervals
+    s0 = scaleSeq[:-1][:, None]  # shape (m,1)
+    s1 = scaleSeq[1:][:, None]   # shape (m,1)
+
+    b = np.minimum(s1, y) - np.maximum(s0, x)
+    b = np.maximum(0, b)  # zero out negatives
+
+    return np.sum(b, axis=1) / (scaleSeq[1:] - scaleSeq[:-1])
+    
 def computeEulerCharacteristic(D, maxhomDim, scaleSeq):
     """
     Compute the Euler Characteristic Curve (ECC) vectorization for a given homological dimension, maximum homological dimension, and scale sequence.
@@ -272,10 +276,9 @@ def computeEulerCharacteristic(D, maxhomDim, scaleSeq):
     Returns:
         numpy.ndarray: The ECC vector.
     """
-    ecc = np.zeros( len(scaleSeq)-1)
-    for d in range(maxhomDim+1):
-        ecc = ecc + (-1)**d * computeBettiCurve(D, d, scaleSeq)
+    ecc = sum(((-1) ** d) * computeBettiCurve(D, d, scaleSeq) for d in range(maxhomDim + 1))
     return ecc
+
 
 def computePersistentEntropy(D, homDim, scaleSeq):
     """
