@@ -416,30 +416,50 @@ def computePersistenceImage(D, homDim, xSeq, ySeq, sigma):
 
     """
     D_ = D[homDim].copy()
-    D_[:,1] = D_[:,1] - D_[:,0]
+    D_[:, 1] = D_[:, 1] - D_[:, 0]  # convert death -> persistence
     n_rows = D_.shape[0]
 
     resB = len(xSeq) - 1
-    resP = len(ySeq)-1
+    resP = len(ySeq) - 1
     minP, maxP = ySeq[0], ySeq[-1]
-    dy = (maxP-minP)/resP
-    y_lower = np.arange(minP, maxP, dy)
-    y_upper = y_lower + dy
 
-    nSize = resP if homDim == 0 else resP*resB
-    Psurf_mat = np.zeros( (nSize, n_rows))
-    if homDim==0:
-        for i in range(n_rows):
-            Psurf_mat[:, i] = PSurfaceH0(D_[i, :], y_lower, y_upper, sigma, maxP)
+    # use the same bin edges as the original code
+    y_lower = np.asarray(ySeq[:-1], dtype=float)
+    y_upper = np.asarray(ySeq[1:], dtype=float)
+
+    # short-circuit empty diagram
+    if n_rows == 0:
+        return np.zeros(resP if homDim == 0 else resP * resB, dtype=float)
+
+    mu_y = D_[:, 1].astype(float)  # persistence
+    # same weighting as original: y/maxP if y < maxP else 1
+    wgt = np.where(mu_y < maxP, mu_y / maxP, 1.0)  # shape (n_rows,)
+
+    if homDim == 0:
+        # Iy: (resP, n_rows) where Iy[i,n] = pnorm(y_upper[i], mu_y[n]) - pnorm(y_lower[i], mu_y[n])
+        Iy = pnorm(y_upper[:, None], mu_y[None, :], sigma) - pnorm(y_lower[:, None], mu_y[None, :], sigma)
+        # multiply per-point weights and sum over points -> (resP,)
+        return np.sum(Iy * wgt[None, :], axis=1).astype(float)
+
     else:
-        minB, maxB = xSeq[0], xSeq[-1]
-        dx = (maxB-minB)/resB
-        x_lower = np.arange(minB, maxB, dx)
-        x_upper = x_lower + dx
-        for i in range(n_rows):
-            Psurf_mat[:, i] = PSurfaceHk(D_[i, :], y_lower, y_upper, x_lower, x_upper, sigma, maxP)
-    out = np.sum(Psurf_mat, axis = 1)
-    return out
+        # x bin edges
+        x_lower = np.asarray(xSeq[:-1], dtype=float)
+        x_upper = np.asarray(xSeq[1:], dtype=float)
+
+        mu_x = D_[:, 0].astype(float)  # birth
+
+        # Ix: (resB, n_rows), Iy: (resP, n_rows)
+        Ix = pnorm(x_upper[:, None], mu_x[None, :], sigma) - pnorm(x_lower[:, None], mu_x[None, :], sigma)
+        Iy = pnorm(y_upper[:, None], mu_y[None, :], sigma) - pnorm(y_lower[:, None], mu_y[None, :], sigma)
+
+        # Combine point contributions:
+        # out_matrix[i_y, j_x] = sum_n (Iy[i_y, n] * wgt[n] * Ix[j_x, n])
+        # tensordot(Iy * wgt, Ix) -> shape (resP, resB). Transpose to (resB, resP)
+        # out_matrix shape (resP, resB)
+        out_matrix = np.tensordot(Iy * wgt[None, :], Ix, axes=([1], [1]))
+
+        # flatten row-major, no transpose
+        return out_matrix.ravel(order='C')
 
 def computeFDA(PD, maxD, homDim = 0, K = 10):
     X = np.zeros( (2*K+1))
