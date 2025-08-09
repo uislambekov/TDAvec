@@ -167,11 +167,15 @@ The code for `computePersistenceImage()` is adopted from the `pers.image()` func
 
 Finally, we compare the computational costs of two vector-based vectorization methods—`persistence landscape` and `persistence silhouette`—across three `R` packages: `TDA`, `TDAkit`, and `TDAvec`. These are the only vector summaries consistently implemented in these three packages. For persistence diagrams with sizes ranging from 100 to 1000 points, we generate random birth and death values, construct the diagrams, and apply each method using the appropriate package functions. To assess performance, we use the `microbenchmark` package to record the median execution time (in milliseconds) for each method, averaged over 10 repetitions.
 
+
 ```{r message=FALSE, warning=FALSE}
 library(TDA)
+options(rgl.useNULL=TRUE)
 library(TDAkit)
 library(microbenchmark)
+```
 
+```{r message=FALSE, warning=FALSE}
 N <- seq(100,1000,by=100) # sequence of diagram sizes
 method <- c('landscape-TDA','landscape-TDAkit','landscape-TDAvec',
             'silhouette-TDA','silhouette-TDAkit','silhouette-TDAvec')
@@ -199,9 +203,21 @@ for (i in seq_along(N)){
   ))
   cost[i,] <- mb[['median']]
 }
-
-print(t(cost),digits = 2)
 ```
+
+Let us also download the results for python simulation, created using `./python/tdavec/time_tests.py` script
+
+```{r}
+py_lines <- readLines("../python/tdavec/py_times.txt")
+py_cost <- rbind(
+  t(cost),
+  t(sapply(3:length(py_lines), function(i) 1000*as.numeric(strsplit(py_lines[i], ",")[[1]][4])))
+)
+rownames(py_cost)[nrow(py_cost)] <- "silhouette-python"
+print(py_cost, digits = 3)
+```
+
+
 
 From the results, we observe significant differences in computational efficiency: `TDAvec` consistently outperforms both `TDAkit` and `TDA`, with its silhouette and landscape methods being substantially faster—e.g., for 1000 points, we compute silhouettes in ~`r round(cost[10,'silhouette-TDAvec'],digits=2)`ms using `TDAvec` versus ~`r round(cost[10,'silhouette-TDAkit'],digits=2)`ms with `TDAkit`, and landscapes in ~`r round(cost[10,'landscape-TDAvec'],digits=2)`ms versus ~`r round(cost[10,'landscape-TDAkit'],digits=2)`ms. 
 
@@ -213,9 +229,10 @@ library(reshape2)
 
 silhouette_data <- data.frame(
   N = N,
-  `silhouette-TDA` = cost[,'silhouette-TDA'],
-  `silhouette-TDAkit` = cost[,'silhouette-TDAkit'],
-  `silhouette-TDAvec` = cost[,'silhouette-TDAvec'])
+  `silhouette-TDA` = py_cost['silhouette-TDA',],
+  `silhouette-TDAkit` = py_cost['silhouette-TDAkit',],
+  `silhouette-TDAvec` = py_cost['silhouette-TDAvec',],
+  `silhouette-python` = py_cost['silhouette-python',])
 
 # Reshape data
 silhouette_data_long <- melt(silhouette_data, id.vars = "N", 
