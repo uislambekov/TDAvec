@@ -2,5 +2,18 @@
 .Rhistory
 .RData
 .Ruserdata
+*.o
+*.so
 env/
+build/
+python/benchmark_*.csv
+python/dist/
 
+.DS_Store
+inst/
+python/rebuild.sh
+python/tdavec.egg-info/
+python/tdavec/__pycache__/
+python/tdavec/benchmark_old/
+python/tdavec/tdavec_core.c
+src/Limits-3c634664.o.tmp
