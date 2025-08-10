@@ -23,7 +23,7 @@ vec calcStats(const vec& values) {
 }
 
 // [[Rcpp::export]]
-NumericVector computeStats(const mat& D, const int& homDim) {
+NumericVector computeStats(const arma::mat& D, const int& homDim) {
 
   uvec indices = find(D.col(0) == homDim); // Get indices of rows where D.col(0) == homDim
 

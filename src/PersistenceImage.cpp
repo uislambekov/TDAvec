@@ -39,10 +39,10 @@ vec PSurfaceHk(const rowvec& point,
 }
 
 // [[Rcpp::export]]
-NumericVector computePersistenceImage(const mat& D,
+NumericVector computePersistenceImage(const arma::mat& D,
                     const int& homDim,
-                    const vec& xSeq,
-                    const vec& ySeq,
+                    const arma::vec& xSeq,
+                    const arma::vec& ySeq,
                     const double& sigma) {
 
   uvec indices = find(D.col(0) == homDim); // Get indices of rows where D.col(0) == homDim

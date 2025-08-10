@@ -8,7 +8,7 @@ using namespace std;
 
 
 // [[Rcpp::export]]
-NumericVector computeTropicalCoordinates(const mat& D, const int& homDim, const int&r=1) {
+NumericVector computeTropicalCoordinates(const arma::mat& D, const int& homDim, const int&r=1) {
 
   if (r <= 0) stop("r must be a positive integer!");
 

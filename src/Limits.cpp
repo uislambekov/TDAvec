@@ -26,7 +26,7 @@ vec findMinMax(const mat& pd, const int& homDim) {
 }
 
 // [[Rcpp::export]]
-NumericVector computeLimits(const field<mat>& Dlist, const int& homDim) {
+NumericVector computeLimits(const arma::field<arma::mat>& Dlist, const int& homDim) {
 // Compute extreme values of birth, death and persistence
     int n = Dlist.n_elem;
   vec minB(n), maxB(n), maxD(n), minP(n), maxP(n);
