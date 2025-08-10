@@ -17,3 +17,5 @@ python/tdavec/__pycache__/
 python/tdavec/benchmark_old/
 python/tdavec/tdavec_core.c
 src/Limits-3c634664.o.tmp
+/doc/
+/Meta/
