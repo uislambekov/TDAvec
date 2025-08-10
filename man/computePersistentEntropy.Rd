@@ -10,8 +10,9 @@ For a given persistence diagram \eqn{D={(b_i,d_i)}_{i=1}^N} (corresponding to a 
 }
 
 \usage{
-computePersistentEntropy(D, homDim, scaleSeq evaluate = "intervals")
+computePersistentEntropy(D, homDim, scaleSeq, evaluate = "intervals")
 }
+\alias{computePersistentEntropy}
 
 \arguments{
 \item{D}{a persistence diagram: a matrix with three columns containing the homological dimension, birth and death values respectively.}
