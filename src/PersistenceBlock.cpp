@@ -6,8 +6,8 @@ using namespace arma;
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-NumericVector computePersistenceBlock(const mat& D, const int& homDim,
-                     const vec& xSeq, const vec& ySeq,
+NumericVector computePersistenceBlock(const arma::mat& D, const int& homDim,
+                     const arma::vec& xSeq, const arma::vec& ySeq,
                      const double& tau = 0.3) {
 
   // Filter rows matching the given dimension

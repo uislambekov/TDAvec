@@ -174,12 +174,27 @@ def computePersistenceLandscape(D, homDim, scaleSeq, k=1):
         numpy.ndarray: The persistence landscape vector.
     """
     if D[homDim].shape[0] == 0:
-        return np.zeros( len(scaleSeq))
-    birth, death = D[homDim][:,0], D[homDim][:,1]
-    Lambda = [
-        np.sort(pmax(0, np.apply_along_axis(min, 0, np.array([s-birth, death-s]))))[-k]
-        for s in scaleSeq]
-    return np.array(Lambda)
+        return np.zeros(len(scaleSeq))
+
+    birth, death = D[homDim][:, 0], D[homDim][:, 1]
+
+    # Broadcast differences
+    s = scaleSeq[:, None]  # shape (m, 1)
+    left = s - birth       # distance to birth
+    right = death - s      # distance to death
+
+    # Triangular function height: min(left, right), but >= 0
+    height = np.minimum(left, right)
+    height = np.maximum(height, 0)
+
+    # Get k-th largest height per row
+    n = height.shape[1]
+    if k > n:
+        return np.zeros(len(scaleSeq))
+    idx = n - k  # index for kth largest
+    kth_vals = np.partition(height, idx, axis=1)[:, idx]
+
+    return kth_vals
 
 # fast version of computePersistenceSilhouette
 def computePersistenceSilhouette(D, homDim, scaleSeq, p=1):
@@ -253,12 +268,16 @@ def computeBettiCurve(D, homDim, scaleSeq):
     Returns:
         numpy.ndarray: The VAB vector.
     """
-    x, y = D[homDim][:,0], D[homDim][:,1]
-    vab = []
-    for k in range( len(scaleSeq)-1):
-        b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
-        vab.append( sum(pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
-    return np.array(vab)
+    x, y = D[homDim][:, 0], D[homDim][:, 1]
+
+    # Broadcast x, y over scale intervals
+    s0 = scaleSeq[:-1][:, None]  # shape (m,1)
+    s1 = scaleSeq[1:][:, None]   # shape (m,1)
+
+    b = np.minimum(s1, y) - np.maximum(s0, x)
+    b = np.maximum(0, b)  # zero out negatives
+
+    return np.sum(b, axis=1) / (scaleSeq[1:] - scaleSeq[:-1])
 
 def computeEulerCharacteristic(D, maxhomDim, scaleSeq):
     """
@@ -272,10 +291,9 @@ def computeEulerCharacteristic(D, maxhomDim, scaleSeq):
     Returns:
         numpy.ndarray: The ECC vector.
     """
-    ecc = np.zeros( len(scaleSeq)-1)
-    for d in range(maxhomDim+1):
-        ecc = ecc + (-1)**d * computeBettiCurve(D, d, scaleSeq)
+    ecc = sum(((-1) ** d) * computeBettiCurve(D, d, scaleSeq) for d in range(maxhomDim + 1))
     return ecc
+
 
 def computePersistentEntropy(D, homDim, scaleSeq):
     """
@@ -289,15 +307,28 @@ def computePersistentEntropy(D, homDim, scaleSeq):
     Returns:
         list: The PES values.
     """
-    x, y = D[homDim][:,0], D[homDim][:,1]
-    lL = (y-x)/np.sum(y-x)
-    entr = -lL*np.log10(lL)/np.log10(2)
-    pes = []
-    for k in range( len(scaleSeq)-1):
-        b = pmin(scaleSeq[k+1],y)-pmax(scaleSeq[k],x)
-        pes.append( np.sum(entr*pmax(0,b))/(scaleSeq[k+1]-scaleSeq[k]))
-    return pes
+    if D[homDim].shape[0] == 0:
+        return np.zeros(len(scaleSeq) - 1)
 
+    x, y = D[homDim][:, 0], D[homDim][:, 1]
+
+    # Persistence length proportions
+    lengths = y - x
+    lL = lengths / np.sum(lengths)
+    entr = -lL * (np.log10(lL) / np.log10(2))
+
+    # Broadcast: each interval against all birth/death times
+    start = scaleSeq[:-1, None]
+    end = scaleSeq[1:, None]
+
+    b = np.minimum(end, y) - np.maximum(start, x)
+    b = np.maximum(b, 0)  # clamp negatives to 0
+
+    # Weighted sum and normalization in one vectorized step
+    pes = np.sum(entr * b, axis=1) / (end[:, 0] - start[:, 0])
+
+    return pes
+    
 from scipy.stats import norm
 def pnorm(x, mean, sd):
     """
@@ -385,30 +416,50 @@ def computePersistenceImage(D, homDim, xSeq, ySeq, sigma):
 
     """
     D_ = D[homDim].copy()
-    D_[:,1] = D_[:,1] - D_[:,0]
+    D_[:, 1] = D_[:, 1] - D_[:, 0]  # convert death -> persistence
     n_rows = D_.shape[0]
 
     resB = len(xSeq) - 1
-    resP = len(ySeq)-1
+    resP = len(ySeq) - 1
     minP, maxP = ySeq[0], ySeq[-1]
-    dy = (maxP-minP)/resP
-    y_lower = np.arange(minP, maxP, dy)
-    y_upper = y_lower + dy
 
-    nSize = resP if homDim == 0 else resP*resB
-    Psurf_mat = np.zeros( (nSize, n_rows))
-    if homDim==0:
-        for i in range(n_rows):
-            Psurf_mat[:, i] = PSurfaceH0(D_[i, :], y_lower, y_upper, sigma, maxP)
+    # use the same bin edges as the original code
+    y_lower = np.asarray(ySeq[:-1], dtype=float)
+    y_upper = np.asarray(ySeq[1:], dtype=float)
+
+    # short-circuit empty diagram
+    if n_rows == 0:
+        return np.zeros(resP if homDim == 0 else resP * resB, dtype=float)
+
+    mu_y = D_[:, 1].astype(float)  # persistence
+    # same weighting as original: y/maxP if y < maxP else 1
+    wgt = np.where(mu_y < maxP, mu_y / maxP, 1.0)  # shape (n_rows,)
+
+    if homDim == 0:
+        # Iy: (resP, n_rows) where Iy[i,n] = pnorm(y_upper[i], mu_y[n]) - pnorm(y_lower[i], mu_y[n])
+        Iy = pnorm(y_upper[:, None], mu_y[None, :], sigma) - pnorm(y_lower[:, None], mu_y[None, :], sigma)
+        # multiply per-point weights and sum over points -> (resP,)
+        return np.sum(Iy * wgt[None, :], axis=1).astype(float)
+
     else:
-        minB, maxB = xSeq[0], xSeq[-1]
-        dx = (maxB-minB)/resB
-        x_lower = np.arange(minB, maxB, dx)
-        x_upper = x_lower + dx
-        for i in range(n_rows):
-            Psurf_mat[:, i] = PSurfaceHk(D_[i, :], y_lower, y_upper, x_lower, x_upper, sigma, maxP)
-    out = np.sum(Psurf_mat, axis = 1)
-    return out
+        # x bin edges
+        x_lower = np.asarray(xSeq[:-1], dtype=float)
+        x_upper = np.asarray(xSeq[1:], dtype=float)
+
+        mu_x = D_[:, 0].astype(float)  # birth
+
+        # Ix: (resB, n_rows), Iy: (resP, n_rows)
+        Ix = pnorm(x_upper[:, None], mu_x[None, :], sigma) - pnorm(x_lower[:, None], mu_x[None, :], sigma)
+        Iy = pnorm(y_upper[:, None], mu_y[None, :], sigma) - pnorm(y_lower[:, None], mu_y[None, :], sigma)
+
+        # Combine point contributions:
+        # out_matrix[i_y, j_x] = sum_n (Iy[i_y, n] * wgt[n] * Ix[j_x, n])
+        # tensordot(Iy * wgt, Ix) -> shape (resP, resB). Transpose to (resB, resP)
+        # out_matrix shape (resP, resB)
+        out_matrix = np.tensordot(Iy * wgt[None, :], Ix, axes=([1], [1]))
+
+        # flatten row-major, no transpose
+        return out_matrix.ravel(order='C')
 
 def computeFDA(PD, maxD, homDim = 0, K = 10):
     X = np.zeros( (2*K+1))

@@ -2,7 +2,14 @@ library(testthat)
 library(TDAvec)
 library(TDAstats)
 
-cloud <- read.csv("../python/tdavec/unitCircle.csv")
+load_unit_circle <- function() {
+  file_path <- system.file("extdata", "unitCircle.csv", package = "TDAvec")
+  data <- read.csv(file_path)
+  return(data);
+}
+
+
+cloud <- load_unit_circle()
 diag = TDAstats::calculate_homology(cloud, threshold = 2)
 diag <- rbind(diag, c(0,0,2))
 

@@ -7,7 +7,7 @@ using namespace std;
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-NumericVector computeBettiCurve(const mat& D, const int& homDim, const vec& scaleSeq, const string& evaluate = "intervals") {
+NumericVector computeBettiCurve(const arma::mat& D, const int& homDim, const arma::vec& scaleSeq, const std::string& evaluate = "intervals") {
 
   uvec indices = find(D.col(0) == homDim); // Get indices of rows where D.col(0) == homDim
 

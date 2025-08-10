@@ -5,8 +5,6 @@
 #include <Rcpp.h>
 
 using namespace Rcpp;
-using namespace arma;
-using namespace std;
 
 #ifdef RCPP_USE_GLOBAL_ROSTREAM
 Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
@@ -14,66 +12,66 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // computeAlgebraicFunctions
-NumericVector computeAlgebraicFunctions(const mat& D, const int& homDim);
+NumericVector computeAlgebraicFunctions(const arma::mat& D, const int& homDim);
 RcppExport SEXP _TDAvec_computeAlgebraicFunctions(SEXP DSEXP, SEXP homDimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
     rcpp_result_gen = Rcpp::wrap(computeAlgebraicFunctions(D, homDim));
     return rcpp_result_gen;
 END_RCPP
 }
 // computeBettiCurve
-NumericVector computeBettiCurve(const mat& D, const int& homDim, const vec& scaleSeq, const string& evaluate);
+NumericVector computeBettiCurve(const arma::mat& D, const int& homDim, const arma::vec& scaleSeq, const std::string& evaluate);
 RcppExport SEXP _TDAvec_computeBettiCurve(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP evaluateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type scaleSeq(scaleSeqSEXP);
-    Rcpp::traits::input_parameter< const string& >::type evaluate(evaluateSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type scaleSeq(scaleSeqSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type evaluate(evaluateSEXP);
     rcpp_result_gen = Rcpp::wrap(computeBettiCurve(D, homDim, scaleSeq, evaluate));
     return rcpp_result_gen;
 END_RCPP
 }
 // computeComplexPolynomial
-mat computeComplexPolynomial(const mat& D, const int& homDim, const int& m, string polyType);
+arma::mat computeComplexPolynomial(const arma::mat& D, const int& homDim, const int& m, std::string polyType);
 RcppExport SEXP _TDAvec_computeComplexPolynomial(SEXP DSEXP, SEXP homDimSEXP, SEXP mSEXP, SEXP polyTypeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
     Rcpp::traits::input_parameter< const int& >::type m(mSEXP);
-    Rcpp::traits::input_parameter< string >::type polyType(polyTypeSEXP);
+    Rcpp::traits::input_parameter< std::string >::type polyType(polyTypeSEXP);
     rcpp_result_gen = Rcpp::wrap(computeComplexPolynomial(D, homDim, m, polyType));
     return rcpp_result_gen;
 END_RCPP
 }
 // computeEulerCharacteristic
-NumericVector computeEulerCharacteristic(const mat& D, const vec& scaleSeq, const int& maxhomDim, const string& evaluate);
+NumericVector computeEulerCharacteristic(const arma::mat& D, const arma::vec& scaleSeq, const int& maxhomDim, const std::string& evaluate);
 RcppExport SEXP _TDAvec_computeEulerCharacteristic(SEXP DSEXP, SEXP scaleSeqSEXP, SEXP maxhomDimSEXP, SEXP evaluateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type scaleSeq(scaleSeqSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type scaleSeq(scaleSeqSEXP);
     Rcpp::traits::input_parameter< const int& >::type maxhomDim(maxhomDimSEXP);
-    Rcpp::traits::input_parameter< const string& >::type evaluate(evaluateSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type evaluate(evaluateSEXP);
     rcpp_result_gen = Rcpp::wrap(computeEulerCharacteristic(D, scaleSeq, maxhomDim, evaluate));
     return rcpp_result_gen;
 END_RCPP
 }
 // computeLimits
-NumericVector computeLimits(const field<mat>& Dlist, const int& homDim);
+NumericVector computeLimits(const arma::field<arma::mat>& Dlist, const int& homDim);
 RcppExport SEXP _TDAvec_computeLimits(SEXP DlistSEXP, SEXP homDimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const field<mat>& >::type Dlist(DlistSEXP);
+    Rcpp::traits::input_parameter< const arma::field<arma::mat>& >::type Dlist(DlistSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
     rcpp_result_gen = Rcpp::wrap(computeLimits(Dlist, homDim));
     return rcpp_result_gen;
@@ -94,61 +92,61 @@ BEGIN_RCPP
 END_RCPP
 }
 // computePersistenceBlock
-NumericVector computePersistenceBlock(const mat& D, const int& homDim, const vec& xSeq, const vec& ySeq, const double& tau);
+NumericVector computePersistenceBlock(const arma::mat& D, const int& homDim, const arma::vec& xSeq, const arma::vec& ySeq, const double& tau);
 RcppExport SEXP _TDAvec_computePersistenceBlock(SEXP DSEXP, SEXP homDimSEXP, SEXP xSeqSEXP, SEXP ySeqSEXP, SEXP tauSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type xSeq(xSeqSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type ySeq(ySeqSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type xSeq(xSeqSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type ySeq(ySeqSEXP);
     Rcpp::traits::input_parameter< const double& >::type tau(tauSEXP);
     rcpp_result_gen = Rcpp::wrap(computePersistenceBlock(D, homDim, xSeq, ySeq, tau));
     return rcpp_result_gen;
 END_RCPP
 }
 // computePersistenceImage
-NumericVector computePersistenceImage(const mat& D, const int& homDim, const vec& xSeq, const vec& ySeq, const double& sigma);
+NumericVector computePersistenceImage(const arma::mat& D, const int& homDim, const arma::vec& xSeq, const arma::vec& ySeq, const double& sigma);
 RcppExport SEXP _TDAvec_computePersistenceImage(SEXP DSEXP, SEXP homDimSEXP, SEXP xSeqSEXP, SEXP ySeqSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type xSeq(xSeqSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type ySeq(ySeqSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type xSeq(xSeqSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type ySeq(ySeqSEXP);
     Rcpp::traits::input_parameter< const double& >::type sigma(sigmaSEXP);
     rcpp_result_gen = Rcpp::wrap(computePersistenceImage(D, homDim, xSeq, ySeq, sigma));
     return rcpp_result_gen;
 END_RCPP
 }
 // computePersistenceLandscape
-mat computePersistenceLandscape(const mat& D, const int& homDim, const vec& scaleSeq, const int& k, const bool& generalized, const string& kernel, Nullable<double> h);
+arma::mat computePersistenceLandscape(const arma::mat& D, const int& homDim, const arma::vec& scaleSeq, const int& k, const bool& generalized, const std::string& kernel, Nullable<double> h);
 RcppExport SEXP _TDAvec_computePersistenceLandscape(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP kSEXP, SEXP generalizedSEXP, SEXP kernelSEXP, SEXP hSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type scaleSeq(scaleSeqSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type scaleSeq(scaleSeqSEXP);
     Rcpp::traits::input_parameter< const int& >::type k(kSEXP);
     Rcpp::traits::input_parameter< const bool& >::type generalized(generalizedSEXP);
-    Rcpp::traits::input_parameter< const string& >::type kernel(kernelSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type kernel(kernelSEXP);
     Rcpp::traits::input_parameter< Nullable<double> >::type h(hSEXP);
     rcpp_result_gen = Rcpp::wrap(computePersistenceLandscape(D, homDim, scaleSeq, k, generalized, kernel, h));
     return rcpp_result_gen;
 END_RCPP
 }
 // computePersistenceSilhouette
-NumericVector computePersistenceSilhouette(const mat& D, const int& homDim, const vec& scaleSeq, const double& p, const std::string& evaluate);
+NumericVector computePersistenceSilhouette(const arma::mat& D, const int& homDim, const arma::vec& scaleSeq, const double& p, const std::string& evaluate);
 RcppExport SEXP _TDAvec_computePersistenceSilhouette(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP pSEXP, SEXP evaluateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type scaleSeq(scaleSeqSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type scaleSeq(scaleSeqSEXP);
     Rcpp::traits::input_parameter< const double& >::type p(pSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type evaluate(evaluateSEXP);
     rcpp_result_gen = Rcpp::wrap(computePersistenceSilhouette(D, homDim, scaleSeq, p, evaluate));
@@ -156,38 +154,38 @@ BEGIN_RCPP
 END_RCPP
 }
 // computePersistentEntropy
-NumericVector computePersistentEntropy(const mat& D, const int& homDim, const vec& scaleSeq, string evaluate);
+NumericVector computePersistentEntropy(const arma::mat& D, const int& homDim, const arma::vec& scaleSeq, std::string evaluate);
 RcppExport SEXP _TDAvec_computePersistentEntropy(SEXP DSEXP, SEXP homDimSEXP, SEXP scaleSeqSEXP, SEXP evaluateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
-    Rcpp::traits::input_parameter< const vec& >::type scaleSeq(scaleSeqSEXP);
-    Rcpp::traits::input_parameter< string >::type evaluate(evaluateSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type scaleSeq(scaleSeqSEXP);
+    Rcpp::traits::input_parameter< std::string >::type evaluate(evaluateSEXP);
     rcpp_result_gen = Rcpp::wrap(computePersistentEntropy(D, homDim, scaleSeq, evaluate));
     return rcpp_result_gen;
 END_RCPP
 }
 // computeStats
-NumericVector computeStats(const mat& D, const int& homDim);
+NumericVector computeStats(const arma::mat& D, const int& homDim);
 RcppExport SEXP _TDAvec_computeStats(SEXP DSEXP, SEXP homDimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
     rcpp_result_gen = Rcpp::wrap(computeStats(D, homDim));
     return rcpp_result_gen;
 END_RCPP
 }
 // computeTemplateFunction
-NumericVector computeTemplateFunction(const mat& D, const int& homDim, const double& delta, const int& d, const double& epsilon);
+NumericVector computeTemplateFunction(const arma::mat& D, const int& homDim, const double& delta, const int& d, const double& epsilon);
 RcppExport SEXP _TDAvec_computeTemplateFunction(SEXP DSEXP, SEXP homDimSEXP, SEXP deltaSEXP, SEXP dSEXP, SEXP epsilonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
     Rcpp::traits::input_parameter< const double& >::type delta(deltaSEXP);
     Rcpp::traits::input_parameter< const int& >::type d(dSEXP);
@@ -197,12 +195,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // computeTropicalCoordinates
-NumericVector computeTropicalCoordinates(const mat& D, const int& homDim, const int& r);
+NumericVector computeTropicalCoordinates(const arma::mat& D, const int& homDim, const int& r);
 RcppExport SEXP _TDAvec_computeTropicalCoordinates(SEXP DSEXP, SEXP homDimSEXP, SEXP rSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
     Rcpp::traits::input_parameter< const int& >::type homDim(homDimSEXP);
     Rcpp::traits::input_parameter< const int& >::type r(rSEXP);
     rcpp_result_gen = Rcpp::wrap(computeTropicalCoordinates(D, homDim, r));

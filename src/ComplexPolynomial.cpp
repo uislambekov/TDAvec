@@ -27,7 +27,7 @@ cx_vec T(const vec& x, const vec& y) {
 }
 
 // [[Rcpp::export]]
-mat computeComplexPolynomial(const mat& D, const int& homDim, const int& m=1, string polyType = "R") {
+arma::mat computeComplexPolynomial(const arma::mat& D, const int& homDim, const int& m=1, std::string polyType = "R") {
 
     // Get indices of rows where D.col(0) == homDim
   uvec indices = find(D.col(0) == homDim);
