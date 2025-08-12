@@ -22,7 +22,7 @@ All these functions can easily be called using `tdavec.tdavec_core` package.
 
 In addition, we provide also `sklearn`-type interface to the same functionality, which could be more familiar for python programmers.
 
-Note that the package was tested only on python 3.12. 
+Note that the package was tested only on python 3.12 and requires Microsoft Build Tools for installation.
 
 # Setup
 
@@ -32,11 +32,11 @@ Note that the package was tested only on python 3.12.
 
 into your environment. 
 
-You can also install the current verion from the GitHub with
+You can also install the current version from the GitHub with
 
     pip install -e "git+https://github.com/uislambekov/TDAvec.git#egg=tdavec&subdirectory=python"
 
-Alternatively, you can install it from the source. In order to do this clone mentioned above github repository and run the followin commants from the project root directory:
+Alternatively, you can install it from the source. In order to do this clone mentioned above github repository and run the following commands from the project root directory:
 
 
     pip install numpy==1.26.4 ripser==0.6.8
