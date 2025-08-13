@@ -32,19 +32,11 @@ Note that the package was tested only on python 3.12 and requires Microsoft Buil
 
 into your environment. 
 
-You can also install the current version from the GitHub with
-
-    pip install -e "git+https://github.com/uislambekov/TDAvec.git#egg=tdavec&subdirectory=python"
-
-Alternatively, you can install it from the source. In order to do this clone mentioned above github repository and run the following commands from the project root directory:
-
-
-    pip install numpy==1.26.4 ripser==0.6.8
-    python3 setup.py build_ext --inplace
-    pip install .
-
-after that you should have `tdavec` package installed in your environment. 
-
+If a wheel is not available for your system, pip will build from source.
+This may require a C/C++ compiler:
+* **Windows**: Microsoft Build Tools
+* **macOS**: Xcode Command Line Tools (xcode-select --install)
+* **Linux**: gcc/clang and Python development headers (python3-dev)
 
 In order to check if the intallation process was completed, you can run python and evaluate the following lines:
 
