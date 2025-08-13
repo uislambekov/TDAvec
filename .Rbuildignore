@@ -2,3 +2,12 @@
 ^\.Rproj\.user$
 ^doc$
 ^Meta$
+^python$
+
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+JOSS
+paper.bib
+paper.md
+paper.pdf
+python

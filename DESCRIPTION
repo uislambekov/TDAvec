@@ -10,11 +10,17 @@ License: MIT License
 Encoding: UTF-8
 Imports:
   Rcpp (>= 1.0.5),
-  TDAstats
+  TDAstats,
+  TDA,
+  TDAkit,
+  ggplot2,
+  microbenchmark,
+  reshape2
 LinkingTo: Rcpp, RcppArmadillo
 VignetteBuilder: knitr
 URL: https://github.com/uislambekov/TDAvec
 BugReports: https://github.com/uislambekov/TDAvec/issues
-Suggests: 
+Suggests:
+    knitr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
