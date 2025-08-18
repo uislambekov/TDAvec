@@ -1,5 +1,5 @@
 ---
-title: 'TDAvec: Computing  Vector Summaries of Persistence Diagrams for Topological
+title: 'TDAvec: Computing Vector Summaries of Persistence Diagrams for Topological
   Data Analysis in R and Python'
 authors:
 - name: Umar Islambekov
@@ -32,7 +32,7 @@ A topological descriptor outputted by the persistent homology encoding the shape
 
 # Statement of need
 
-The problem of transforming PDs into finite dimensional vectors for machine learning purposes has attracted considerable attention in the TDA research community over the past decade. Early vector summaries of PDs\textemdash such as the persistence landscape [@bubenik2015statistical], persistence silhouette [@chazal2014stochastic], Betti curve\footnote{Also known as the Betti function.} [@chazal2021introduction], and persistence image [@adams2017persistence]\textemdash have been implemented in both \texttt{Python} and \texttt{R} packages. However, there remains a need for a unified package that brings these methods (both the classical approaches and those developed more recently) together using consistent syntax and efficient implementation. The \texttt{TDAvec} package, available in both \texttt{R} and \texttt{Python}, is designed to meet this need. Its contributions can be summarized in the following three areas:
+The problem of transforming PDs into finite-dimensional vectors for machine learning purposes has attracted considerable attention in the TDA research community over the past decade. Early vector summaries of PDs\textemdash such as the persistence landscape [@bubenik2015statistical], persistence silhouette [@chazal2014stochastic], Betti curve\footnote{Also known as the Betti function.} [@chazal2021introduction], and persistence image [@adams2017persistence]\textemdash have been implemented in both \texttt{Python} and \texttt{R} packages. However, there remains a need for a unified package that brings these methods (both the classical approaches and those developed more recently) together using consistent syntax and efficient implementation. The \texttt{TDAvec} package, available in both \texttt{R} and \texttt{Python}, is designed to meet this need. Its contributions can be summarized in the following three areas:
 
 1. It extends the list of implemented vector summaries for PDs by incorporating 13 vectorization methods used in TDA. These methods can be grouped into three broad categories:
 
@@ -62,7 +62,7 @@ In addition to this standard approach, the \texttt{TDAvec} package introduces an
 \begin{equation} \Big(\frac{1}{\Delta t_1}\int_{t_1}^{t_2}f(t)dt,\frac{1}{\Delta t_2}\int_{t_2}^{t_3}f(t)dt,\ldots,\frac{1}{\Delta t_{n-1}}\int_{t_{n-1}}^{t_n}f(t)dt\Big)\in\mathbb{R}^{n-1}, \end{equation}
 where $\Delta t_i = t_{i+1} - t_i$. Unlike the method in (\ref{stand_vec}), this approach retains information about the behavior of $f$ between neighboring scale points. It is applicable to any univariate summary function that is integrable in closed form, such as the persistence silhouette, persistent entropy summary function, Euler characteristic curve, normalized life curve, and Betti function. Users have the flexibility to choose between the two vectorization methods based on their application needs.
 
-3. To achieve higher computational efficiency, all code behind the vector summaries of \texttt{TDAvec} is written in C++ using the `Rcpp` [@Rcpp] and `RcppArmadillo` [@RcppArmadillo] packages. 
+3. To achieve higher computational efficiency, all underlying code for the vector summaries in \texttt{TDAvec} is written in C++ using the `Rcpp` [@Rcpp] and `RcppArmadillo` [@RcppArmadillo] packages.
 
 The \texttt{TDAvec} \texttt{R} package, along with a vignette demonstrating basic usage and run-time comparisons with other packages, is available on the CRAN repository\footnote{https://cran.r-project.org/web/packages/TDAvec/index.html}. For \texttt{Python} examples, we refer the readers to [this page](https://github.com/ALuchinsky/tdavec/).
 
