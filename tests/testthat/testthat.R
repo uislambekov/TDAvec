@@ -1,3 +1,5 @@
+options(rgl.useNULL=TRUE)
+
 library(testthat)
 library(TDAvec)
 library(TDAstats)
@@ -30,7 +32,7 @@ test_that("PL_1", {
 
 
 test_that("PS_0", {
-  R <- computePersistenceSilhouette(diag, 0, scaleSeq)
+R <- computePersistenceSilhouette(diag, 0, scaleSeq)
   python  <- c(0.0507014405880279, 0.0420473568616778, 0.0615450397748265, 0.0861630556847571,
            0.110781071594688, 0.110781071594688, 0.0861630556847571,
            0.0615450397748265, 0.0369270238648959, 0.0123090079549653)
