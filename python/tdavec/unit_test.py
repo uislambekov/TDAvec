@@ -5,6 +5,7 @@ from tdavec.tdavec_core import computeNormalizedLife, computeBettiCurve, compute
     computeEulerCharacteristic, computePersistentEntropy, computePersistenceImage, computeComplexPolynomial, computeFDA, computeTropicalCoordinates, computeTemplateFunction
 import ripser
 import numpy as np
+import pyprojroot
 
 def lists_are_equal(nums1, nums2, atol=1e-6):
     return np.allclose(nums1, nums2, atol=atol)
@@ -12,7 +13,9 @@ def lists_are_equal(nums1, nums2, atol=1e-6):
 class Testing_Functions(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.X = np.loadtxt("./tdavec/unitCircle.csv", skiprows=1, delimiter=",")
+        base_path = pyprojroot.find_root( pyprojroot.has_dir(".git"))
+
+        self.X = np.loadtxt(base_path / "python" / "tdavec" / "unitCircle.csv", skiprows=1, delimiter=",")
         self.D = ripser.ripser(self.X, thresh=2)["dgms"]
         self.D[0][-1, 1] = 2
         self.scaleSeq = np.linspace(0, 2, 11)
