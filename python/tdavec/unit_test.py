@@ -15,9 +15,9 @@ class Testing_Functions(unittest.TestCase):
     def setUp(self) -> None:
         base_path = pyprojroot.find_root( pyprojroot.has_dir(".git"))
 
-        self.X = np.loadtxt(base_path / "python" / "tdavec" / "unitCircle.csv", skiprows=1, delimiter=",")
-        self.D = ripser.ripser(self.X, thresh=2)["dgms"]
-        self.D[0][-1, 1] = 2
+        self.X = np.loadtxt(base_path / "inst" / "extdata" / "unitCircle.csv", skiprows=1, delimiter=",")
+        diag = np.loadtxt(base_path / "inst" / "extdata" / "diag.csv", skiprows=1, delimiter=",")
+        self.D = [diag[diag[:,0] == 0,1:3], diag[diag[:,0] == 1,1:3]]
         self.scaleSeq = np.linspace(0, 2, 11)
 
 
