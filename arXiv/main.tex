@@ -578,23 +578,16 @@ f(x,y)=\sum_{i=1}^N \mathbf 1_{E(b_i,p_i)}(x,y),
 $$
 where $E(b_i,p_i)=[b_i-\frac{\lambda_i}{2},b_i+\frac{\lambda_i}{2}]\times [p_i-\frac{\lambda_i}{2},p_i+\frac{\lambda_i}{2}]$ and $\lambda_i=2\tau p_i$ with $\tau\in (0,1]$.
 
-9) \textbf{Functional Data Analysis}:
 
-The drawback of all listed above vectorization methods is that we have to choose some grid points on t axis or on $(b,p)$ plane to get the numeric array of predictors from the vectorized functions. An alternative approach is to select some set of basis functions $\xi_i(t)$ and expand the result of the vectorization (for example, Betti Curve) as a combination of them:
-$$
-g(t) = \sum_i I_{[b_i,d_i)]}(t) = \sum_k c_k \xi_k(t)
-$$
-The coefficients $\{c_k\}$ will be predictors in this approach. It is clear for this type of selection we do not need to select arbitrary the grid points. In addition, it is more robust to small changes of the function $g(t)$ or, alternatively, to birth-death points in the persistence diagram.
-
-10) \textbf{Simple statistics}:
+9) \textbf{Simple statistics}:
 
 \newcommand{\eqn}[1]{$#1$}
 \newcommand{\code}[1]{\texttt{#1}}
 
-For a given persistence diagram \eqn{D=\{(b_i,d_i)\}_{i=1}^N} (corresponding to a specified homological dimension), \code{computeStats()} calculates descriptive statistics of the birth, death, midpoint (the average of birth and death), and lifespan (death minus birth) values. Additionally, it computes the total number of points and entropy of the lifespan values. Points in \eqn{D} with infinite death values are ignored.
+For a given persistence diagram \code{computeStats()} calculates descriptive statistics of the birth, death, midpoint (the average of birth and death), and lifespan (death minus birth) values corresponding to a specified homological dimension. Additionally, it computes the total number of points and entropy of the lifespan values. Points in \eqn{D} with infinite death values are ignored.
 
 
-11) \textbf{Tropical Coordinates}:
+10) \textbf{Tropical Coordinates}:
 
 This vectorization for each homological dimension  computes the following seven tropical coordinates based on the lifespans (or persistence) \eqn{\lambda_i = d_i - b_i}:
 
@@ -608,9 +601,9 @@ This vectorization for each homological dimension  computes the following seven 
   \item \eqn{F_7 = \sum_j \big(\max_i(\min(r \lambda_i, b_i)+\lambda_i)  - (\min(r \lambda_j, b_j)+\lambda_j)\big)}.
 }
 
-12) \textbf{Template Function Vectorization}
+11) \textbf{Template Function Vectorization}
 
-For a given persistence diagram \eqn{D=\{(b_i,d_i)\}_{i=1}^N} (corresponding to a specified homological dimension), this vectorization uses a collection of tent template functions defined by
+This vectorization uses a collection of tent template functions defined by
 
 \begin{align*}
   G_{(b,p),\delta}(D) &=
@@ -618,9 +611,9 @@ For a given persistence diagram \eqn{D=\{(b_i,d_i)\}_{i=1}^N} (corresponding to 
 \end{align*}
 where \eqn{p_i=d_i-b_i} (persistence), \eqn{b\geq 0}, \eqn{p>0} and  \eqn{0<\delta<p}. The point \eqn{(b,p)} is referred to as the center. Points in \eqn{D} with infinite death values are ignored.
 
-13) \textbf{Algebraic Functions}
+12) \textbf{Algebraic Functions}
 
-For a given persistence diagram \eqn{D=\{(b_i,d_i)\}_{i=1}^N} (corresponding to a specified homological dimension), this vectorization computes following four algebraic functions bases on birth and death values:
+This vectorization computes following four algebraic functions bases on birth and death values:
 \begin{align}
   f_1 &= \sum_i b_i\left(d_i - b_i\right) \\
   f_2 &= \sum_i \left( d_{\max} - d_i\right) \left(d_i - b_i\right) \\
@@ -629,9 +622,9 @@ For a given persistence diagram \eqn{D=\{(b_i,d_i)\}_{i=1}^N} (corresponding to 
 \end{align}
 where $d_{\max} = \max d_i$. Points in $D$ with infinite death value are ignored.
 
-14) Complex Polynomial
+13) Complex Polynomial
 
-For a given persistence diagram \eqn{D=\{(b_i,d_i)\}_{i=1}^N} (corresponding to a specified homological dimension), this vectorization computes the coefficients of a complex polynomial
+This vectorization computes the coefficients of a complex polynomial
 \begin{align}
   C_X(z) = \prod_i \left[z - X\left(b_i, d_i\right)\right],
 \end{align}
@@ -645,4 +638,13 @@ where $X: R \to C$ is any of the following three functions:
             \end{cases}
 \end{align}
 Points in $D$ with infinite death value are ignored.
+
+15) \textbf{Functional Data Analysis}:
+
+The drawback of all listed above vectorization methods is that we have to choose some grid points on t axis or on $(b,p)$ plane to get the numeric array of predictors from the vectorized functions. An alternative approach is to select some set of basis functions $\xi_i(t)$ and expand the result of the vectorization (for example, Betti Curve) as a combination of them:
+$$
+g(t) = \sum_i I_{[b_i,d_i)]}(t) = \sum_k c_k \xi_k(t)
+$$
+The coefficients $\{c_k\}$ will be predictors in this approach. It is clear for this type of selection we do not need to select arbitrary the grid points. In addition, it is more robust to small changes of the function $g(t)$ or, alternatively, to birth-death points in the persistence diagram.
+
 \end{document}
