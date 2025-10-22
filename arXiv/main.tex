@@ -10,7 +10,7 @@
 
 \usepackage[numbers,sort&compress]{natbib}
 
-\graphicspath{{./figs}}
+%\graphicspath{{./figs}}
 
 \title{Vectorization of Persistence Diagrams for Topological Data Analysis in R and Python Using TDAvec Package}
 
@@ -182,7 +182,7 @@ In order to do such a comparison it would be useful to have all considered vecto
 
 The TDArea R package and its Python counterpart aim to fill these gaps. Its contributions can be summarized as following:
 \begin{enumerate}
-\item It expands the list of implemented vector summaries of PDs by providing vectorization of eight functional summaries found in the TDA literature: \emph{Betti function}, \emph{persistence landscape function}, \emph{persistence silhouette function}, \emph{persistent entropy summary function} \cite{atienza2020stability}, \emph{Euler characteristic curve} \cite{richardson2014efficient}, \emph{normalized life curve} \cite{chung2022persistence}, \emph{persistence surface} \cite{adams2017persistence} and \emph{persistence block} \cite{chan2022computationally}. In addition, in the updated version o the article such vectorizations as simple \emph{simple statistics}, \emph{Tropical Coordinates}, and \emph{Template Functions} \cite{TentFunction} were added. In the Appendix you an see definitions of these vectorizations.
+\item It expands the list of implemented vector summaries of PDs by providing vectorization of eight functional summaries found in the TDA literature: \emph{Betti function}, \emph{persistence landscape function}, \emph{persistence silhouette function}, \emph{persistent entropy summary function} \cite{atienza2020stability}, \emph{Euler characteristic curve} \cite{richardson2014efficient}, \emph{normalized life curve} \cite{chung2022persistence}, \emph{persistence surface} \cite{adams2017persistence} and \emph{persistence block} \cite{chan2022computationally}. In addition, in the updated version o the article such vectorizations as \emph{simple statistics}, \emph{Tropical Coordinates}, and \emph{Template Functions} \cite{TentFunction} were added. In the Appendix you an see definitions of these vectorizations.
 \item A univariate summary function $f$ of a PD is typically vectorized by evaluating it at each point of a superimposed one dimensional grid and arranging the resulting values into a vector:
 %
   \begin{equation}\label{stand_vec}
