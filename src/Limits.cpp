@@ -27,8 +27,8 @@ vec findMinMax(const mat& pd, const int& homDim) {
 
 // [[Rcpp::export]]
 NumericVector computeLimits(const arma::field<arma::mat>& Dlist, const int& homDim) {
-// Compute extreme values of birth, death and persistence
-    int n = Dlist.n_elem;
+
+  int n = Dlist.n_elem;
   vec minB(n), maxB(n), maxD(n), minP(n), maxP(n);
 
   for (int k = 0; k < n; ++k) {
@@ -40,16 +40,22 @@ NumericVector computeLimits(const arma::field<arma::mat>& Dlist, const int& homD
     maxP[k] = ans[4];
   }
 
-  uvec finiteIdx = find_finite(minB);
+  // Keep only finite values for each quantity
+  vec minBf = minB.elem(find_finite(minB));
+  vec maxBf = maxB.elem(find_finite(maxB));
+  vec maxDf = maxD.elem(find_finite(maxD));
+  vec minPf = minP.elem(find_finite(minP));
+  vec maxPf = maxP.elem(find_finite(maxP));
 
-  if (finiteIdx.n_elem==0)
-    stop("The diagrams do not contain points corresponding to homological dimension " + std::to_string(homDim));
-  else
-    return NumericVector::create(
-      Named("minB") = min(minB.elem(finiteIdx)),
-      Named("maxB") = max(maxB.elem(finiteIdx)),
-      Named("maxD") = max(maxD.elem(finiteIdx)),
-      Named("minP") = min(minP.elem(finiteIdx)),
-      Named("maxP") = max(maxP.elem(finiteIdx))
-    );
+  if (minBf.n_elem == 0)
+    stop("The diagrams do not contain points corresponding to homological dimension " +
+      std::to_string(homDim));
+
+  return NumericVector::create(
+    Named("minB") = arma::min(minBf),
+    Named("maxB") = arma::max(maxBf),
+    Named("maxD") = arma::max(maxDf),
+    Named("minP") = arma::min(minPf),
+    Named("maxP") = arma::max(maxPf)
+  );
 }
